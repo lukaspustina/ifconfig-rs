@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>ifconfig.rs</title>
-  </head>
-  <body>
-    <h1>ifconfig.rs</h1>
-    <h3>Your IP address is</h3>
-    <code>{{ ip }}</code>
-    <h3>Your user agent is</h3>
-    <code>{{ user_agent }}</code>
-  </body>
+    <head>
+        <meta charset="utf-8"/>
+        <title>ifconfig.rs</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.4/css/uikit.min.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.4/js/uikit.min.js"></script>
+    </head>
+    <body>
+        <div class="uk-container uk-container-center uk-margin-top">
+            <h1>ifconfig.rs</h1>
+            <p>Yet another ifconfig / what's my IP clone</p>
+            <h3>Your IP address is</h3>
+            <code>{{ ip }}</code>
+            <h3>Your user agent is</h3>
+            <code>{{ user_agent }}</code>
+        </div>
+    </body>
 </html>
 
