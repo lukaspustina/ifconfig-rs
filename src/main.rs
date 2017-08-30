@@ -67,19 +67,27 @@ impl<'a> From<UserAgentParserResult<'a>> for UserAgent<'a> {
 
 
 #[derive(Serialize)]
+struct Ip<'a> {
+    addr: String,
+    version: &'a str,
+}
+
+#[derive(Serialize)]
 struct IndexContext<'a> {
-    ip: String,
+    ip: &'a Ip<'a>,
     user_agent: Option<UserAgent<'a>>,
 }
 
 #[get("/")]
 fn index(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>) -> Template {
-    let ip = format!("{}", req_info.remote.ip());
+    let ip_addr = format!("{}", req_info.remote.ip());
+    let ip_version = if req_info.remote.is_ipv4() { "4" } else { "6" };
+    let ip = Ip { addr: ip_addr, version: ip_version };
     let user_agent = req_info.user_agent
         .and_then(|s| user_agent_parser.parse(&s))
         .map(|res| res.into());
 
-    let context = IndexContext { ip: ip, user_agent: user_agent };
+    let context = IndexContext { ip: &ip, user_agent: user_agent };
     Template::render("index", &context)
 }
 
