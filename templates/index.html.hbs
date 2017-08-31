@@ -39,6 +39,8 @@
                                     <a href="https://www.google.com/maps/place/{{ location.city }},+{{ location.country }}/@{{ location.latitude }},{{ location.longitude }},12z" uk-icon="icon:world" title="Open Google Maps on this location." uk-tooltip></a>
                                 {{/if}}
                             {{/if}}
+                            <br>
+                            <span class="ifconfig">{{#if isp.name }}{{ isp.name }}{{/if}}</span>
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">

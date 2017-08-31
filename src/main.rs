@@ -52,8 +52,8 @@ impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
 #[get("/", format = "application/json", rank=1)]
 #[allow(unknown_lints)] // for clippy
 #[allow(needless_pass_by_value)] // params are passed by value
-fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityReader>) -> Option<Json<JsonValue>> {
-    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db);
+fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
+    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db, &geoip_asn_db);
 
     // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
     match serde_json::to_value(ifconfig){
@@ -65,8 +65,8 @@ fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
 #[get("/", rank=2)]
 #[allow(unknown_lints)] // for clippy
 #[allow(needless_pass_by_value)] // params are passed by value
-fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityReader>) -> Template {
-    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db);
+fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Template {
+    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db, &geoip_asn_db);
     let json = serde_json::to_string_pretty(&ifconfig).ok();
 
     #[derive(Serialize)]
@@ -123,7 +123,8 @@ impl Fairing for HerokuForwardedFor {
 }
 
 fn init_user_agent_parser() -> UserAgentParser { UserAgentParser::new() }
-fn init_geoip_city_reader(db: &str) -> GeoIpCityReader { GeoIpCityReader::open(db).expect("Failed to load GeoIP City DB") }
+fn init_geoip_city_db(db: &str) -> GeoIpCityDb { GeoIpCityDb::new(db).expect("Failed to load GeoIP City DB") }
+fn init_geoip_asn_db(db: &str) -> GeoIpAsnDb { GeoIpAsnDb::new(db).expect("Failed to load GeoIP ASN DB") }
 
 fn main() {
     let mut rocket = rocket::ignite()
@@ -138,9 +139,14 @@ fn main() {
     };
 
     rocket = match rocket.config().get_str("geoip_city_db").map(|s| s.to_string()) {
-        Ok(db) => rocket.manage(init_geoip_city_reader(&db)),
+        Ok(db) => rocket.manage(init_geoip_city_db(&db)),
         _ => rocket,
     };
 
-    rocket.launch();
+     rocket = match rocket.config().get_str("geoip_asn_db").map(|s| s.to_string()) {
+        Ok(db) => rocket.manage(init_geoip_asn_db(&db)),
+        _ => rocket,
+    };
+
+     rocket.launch();
 }
