@@ -16,10 +16,12 @@ use rocket_contrib::Template;
 use std::net::SocketAddr;
 
 static VERSION: &'static str = env!("CARGO_PKG_VERSION");
+static BASE_URL: &'static str = "http://ifconfig.rs";
 
 pub struct RequesterInfo<'a> {
     remote: SocketAddr,
     user_agent: Option<&'a str>,
+    uri: &'a str,
 }
 
 impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
@@ -33,7 +35,11 @@ impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
         };
         let user_agent = req.headers().get_one("User-Agent");
 
-        let request_info = RequesterInfo { remote: remote, user_agent: user_agent };
+        let request_info = RequesterInfo {
+            remote: remote,
+            user_agent: user_agent,
+            uri: req.uri().as_str(),
+        };
         Outcome::Success(request_info)
     }
 }
@@ -63,9 +69,17 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
     struct Context<'a> {
         ifconfig: Ifconfig<'a>,
         version: &'a str,
+        base_url: &'a str,
+        uri: &'a str,
     }
 
-    Template::render("index", &Context{ ifconfig, version: VERSION })
+    let context = Context{
+        ifconfig,
+        version: VERSION,
+        base_url: BASE_URL,
+        uri: req_info.uri
+    };
+    Template::render("index", &context)
 }
 
 fn main() {
