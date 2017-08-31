@@ -52,7 +52,7 @@
                     <div class="uk-width-expand@m">
                         <div>
                             <h4>Hostname</h4>
-                            <span class="mono">{{ host.name }}.lukas.pustina.de</span>
+                            <span class="mono">{{ host.name }}</span>
                         </div>
                     </div>
                      <div class="uk-width-expand@m">
@@ -247,8 +247,8 @@
                                             <dl class="uk-description-list">
                                                 <dt>curl</dt>
                                                 <dd>
-        <pre class="mono-pre">> curl {{ base_url }}{{ uri }}
-        {{ ifconfig.ip.addr }}</pre>
+<pre class="mono-pre">> curl {{ base_url }}{{ uri }}
+{{ ifconfig.ip.addr }}</pre>
                                                 </dd>
                                             </dl>
                                         </div>
@@ -258,8 +258,8 @@
                                             <dl class="uk-description-list">
                                                 <dt>wget</dt>
                                                 <dd>
-        <pre class="mono-pre">> wget -qO - {{ base_url }}{{ uri }}
-        {{ ifconfig.ip.addr }}</pre>
+<pre class="mono-pre">> wget -qO - {{ base_url }}{{ uri }}
+{{ ifconfig.ip.addr }}</pre>
                                                 </dd>
                                             </dl>
                                         </div>
@@ -269,10 +269,10 @@
                                             <dl class="uk-description-list">
                                                 <dt>httpie</dt>
                                                 <dd>
-        <pre class="mono-pre">> http -b {{ base_url }}{{ uri }}
-        {{ ifconfig.ip.addr }}</pre>
-                                                </dd>
-                                            </dl>
+<pre class="mono-pre">> http -b {{ base_url }}{{ uri }}
+{{ ifconfig.ip.addr }}</pre>
+                                            </dd>
+                                        </dl>
                                         </div>
                                     </div>
                                     <div class="uk-width-1-2@s">
@@ -280,8 +280,8 @@
                                             <dl class="uk-description-list">
                                                 <dt>fetch</dt>
                                                 <dd>
-        <pre class="mono-pre">> fetch -qo- {{ base_url }}{{ uri }}
-        {{ ifconfig.ip.addr }}</pre>
+<pre class="mono-pre">> fetch -qo- {{ base_url }}{{ uri }}
+{{ ifconfig.ip.addr }}</pre>
                                                 </dd>
                                             </dl>
                                         </div>
@@ -294,8 +294,8 @@
                                                     <script>
                                                         $(document).ready(get_ifconfig_json("/isp", "#cli-curl-json-slash"));
                                                     </script>
-        <pre class="mono-pre" id="cli-curl-json-slash">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}
-        </pre>
+<pre class="mono-pre" id="cli-curl-json-slash">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}
+</pre>
                                                 </dd>
                                             </dl>
                                         </div>
