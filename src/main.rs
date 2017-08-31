@@ -82,8 +82,49 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
     Template::render("index", &context)
 }
 
+use rocket::{Data, Response};
+use rocket::fairing::{Fairing, Info, Kind};
+use std::net::IpAddr;
+use std::str::FromStr;
+
+#[derive(Default)]
+struct HerokuForwardedFor;
+
+impl Fairing for HerokuForwardedFor {
+    fn info(&self) -> Info {
+        Info {
+            name: "Set the request remote to Heroku's X-Forwarded-For",
+            kind: Kind::Request | Kind::Response
+        }
+    }
+
+    fn on_request(&self, request: &mut Request, _: &Data) {
+        let new_remote = if let Some(xfr) = request.headers().get_one("X-Forwarded-For") {
+            if let Some(remote) = request.remote() {
+                if let Ok(ip) = IpAddr::from_str(xfr) {
+                    Some(SocketAddr::new(ip, remote.port()))
+                } else { None }
+            } else { None }
+        } else { None };
+        if let Some(remote) = new_remote {
+            request.set_remote(remote);
+        }
+    }
+
+    fn on_response(&self, _: &Request, _: &mut Response) {
+        return
+    }
+}
+
 fn main() {
-    rocket::ignite()
+    let mut rocket = rocket::ignite();
+
+    rocket = match rocket.config().get_str("runtime_environment") {
+        Ok("heroku") => rocket.attach(HerokuForwardedFor::default()),
+        _ => rocket
+    };
+
+    rocket
         .mount("/", routes![index_html, index_json])
         .attach(Template::fairing())
         .manage(init_user_agent_parser())

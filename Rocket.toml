@@ -1,0 +1,7 @@
+[development]
+log = "normal"
+runtime_environment = "machine"
+
+[production]
+runtime_environment = "heroku"
+
