@@ -1,5 +1,6 @@
-extern crate woothee;
+extern crate dns_lookup;
 #[macro_use] extern crate serde_derive;
+extern crate woothee;
 
 use std::net::SocketAddr;
 
@@ -13,8 +14,8 @@ pub struct Ip<'a> {
 }
 
 #[derive(Serialize)]
-pub struct Host<'a> {
-    name: &'a str,
+pub struct Host {
+    name: String,
 }
 
 
@@ -46,7 +47,7 @@ impl<'a> From<UserAgentParserResult<'a>> for UserAgent<'a> {
 #[derive(Serialize)]
 pub struct Ifconfig<'a> {
     ip: Ip<'a>,
-    host: Host<'a>,
+    host: Host,
     user_agent: Option<UserAgent<'a>>,
 }
 
@@ -55,7 +56,8 @@ pub fn get_ifconfig<'a>(remote: &'a SocketAddr, user_agent: &Option<&'a str>, us
     let ip_version = if remote.is_ipv4() { "4" } else { "6" };
     let ip = Ip { addr: ip_addr, version: ip_version };
 
-    let host = Host { name: "unknown" };
+    let hostname = dns_lookup::lookup_addr(&remote.ip()).expect("not found");
+    let host = Host { name: hostname };
 
     let user_agent = user_agent
         .and_then(|s| user_agent_parser.parse(s))
