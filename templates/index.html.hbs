@@ -2,6 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8"/>
+        <meta name="description" content="Yet another ifconfig / what's my IP service">
+        <meta name="keywords" content="what's my ip,ifconfig,ip address,json">
+        <meta name="author" content="Lukas Pustina">
         <title>ifconfig.rs</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.28/css/uikit.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -87,11 +90,12 @@
                                 <div>
                                     <p>Every resource supports plain as well as JSON GET requests. JSON responses can be
                                     requested by setting the corresponding <span class="mono">Accept</span> header,
-                                    i.e., <span class="mono">Accept: application/json</span>. {{ pkg_name }} tries to
-                                    identify whether a request is sent by CLI client and then only sends the resource's
-                                    base information. In this way for example, a simple <span class="mono"> curl
-                                    {{ base_url }}{{ uri }}</span> retrieves your IP address. For any other browser
-                                    {{ pkg_name }} returns this beautiful HTML page you're currently looking at.</p>
+                                    i.e., <span class="mono">Accept: application/json</span>. <em>{{ pkg_name }}</em>
+                                    tries to identify whether a request is sent by CLI client and then only sends the
+                                    resource's base information. In this way for example, a simple <span class="mono">
+                                    curl {{ base_url }}{{ uri }}</span> retrieves your IP address. For any other browser
+                                    <em>{{ pkg_name }}</em> returns this beautiful HTML page you're currently looking at.
+                                    </p>
                                     <ul uk-tab>
                                         <li class="uk-active"><a href="#"><span class="mono">/</span></a></li>
                                         <li><a href="#"><span class="mono">/ip</span></a></li>
@@ -305,28 +309,30 @@
                            <div class="uk-width-1-1@s">
                                 <div>
                                     <dl class="uk-description-list">
-                                        <dt>Where is this service hosted?</dt>
+                                        <dt>Where is <em>{{ pkg_name }}</em> hosted?</dt>
                                         <dd>
-                                            The code run on a free-tier Heroku Autoscaling Dnyo that powers down when
-                                            there are not service accesses for a period of time. This may lead to a
-                                            large delay for the first request triggering a service restart.
+                                            The code runs on a free <a href="https://heroku.com">Heroku</a> Autoscaling
+                                            Dnyo that powers down when there are no service accesses for a period of
+                                            time. This may lead to a large delay for the first request triggering a
+                                            service restart.
                                         </dd>
                                     </dl>
                                     <dl class="uk-description-list">
-                                        <dt>Does {{ pkg_name }} support IPv6?</dt>
+                                        <dt>Does <em>{{ pkg_name }}</em> support IPv6?</dt>
                                         <dd>
-                                            Currently, no. The code is agnostic regarding the IP version. Heroku
-                                            currently does not support IPv6 yet, so ifconfig.rs is only available via
-                                            IPv6. You can run your own version of ifconfig.rs at another, IPv6
-                                            supporting provider. Please see the project's
+                                            Currently, no. Even though the code is agnostic regarding the IP version,
+                                            <a href="https://heroku.com">Heroku</a> currently does not support IPv6, so
+                                            <em>{{ pkg_name }}</em> is only available for IPv4. You can run your own
+                                            instance of <em>{{ pkg_name }}</em> at another, IPv6 supporting provider.
+                                            Please see the project's
                                             <a href="https://github.com/lukaspustina/ifconfig-rs">Readme</a> in the
-                                            GitHub repository for how details.
+                                            GitHub repository for details.
                                         </dd>
                                     </dl>
                                     <dl class="uk-description-list">
-                                        <dt>Can I run my own instance of {{ pkg_name }}?</dt>
+                                        <dt>Can I run my own instance of <em>{{ pkg_name }}</em>?</dt>
                                         <dd>
-                                            Sure, you're welcome to. Just clone of fork the
+                                            Yes please, you're welcome to. Just clone of fork the
                                             <a href="https://github.com/lukaspustina/ifconfig-rs">GitHub repository</a>.
                                         </dd>
                                     </dl>
@@ -343,7 +349,15 @@
                     </div>
                 </li>
             </ul>
-            <h6><em>{{ pkg_name }}</em> is yet another <a class="uk-link-text" href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a> service, currently running version {{ version }}. Feel free to contact me on <a href="https://github.com/lukaspustina/ifconfig-rs" uk-icon="icon:github"></a><a href="https://twitter.com/drivebytesting" uk-icon="icon:twitter"></a>.</h6>
+            <small>
+                <em>{{ pkg_name }}</em> is yet another
+                <a class="uk-link-text" href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a>
+                service, currently running version {{ version }}. Feel free to use it as much as you like to, to query it
+                automatically, and to clone and to fork it. Please mind that rate limiting may be applied. If you like,
+                you can to contact me on
+                <a href="https://github.com/lukaspustina/ifconfig-rs" uk-icon="icon:github; ratio: 0.5"></a> and
+                <a href="https://twitter.com/drivebytesting" uk-icon="icon:twitter; ratio: 0.5"></a>.
+            </small>
         </div>
         <script src="https://getuikit.com/migrate.min.js"></script>
     </body>

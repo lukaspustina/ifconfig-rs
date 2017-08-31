@@ -3,7 +3,7 @@ name = "ifconfig-rs"
 version = "0.0.1"
 authors = ["Lukas Pustina <lukas@pustina.net>"]
 
-description = "Yet another ifconfig / what's my IP clone"
+description = "Yet another ifconfig / what's my IP service"
 repository = "https://github.com/lukaspustina/ifconfig-rs"
 readme = "README.md"
 license = "MIT"
