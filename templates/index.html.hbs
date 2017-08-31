@@ -33,7 +33,12 @@
                      <div class="uk-width-1-4@s">
                         <div>
                             <h4>Location</h4>
-                            <span class="ifconfig">Some City, Some Country</span>
+                            <span class="ifconfig">{{ location.city }}, {{ location.country }}</span>
+                            {{#if location.latitude }}
+                                {{# if location.longitude }}
+                                    <a href="https://www.google.com/maps/place/{{ location.city }},+{{ location.country }}/@{{ location.latitude }},{{ location.longitude }},12z" uk-icon="icon:world"></a>
+                                {{/if}}
+                            {{/if}}
                         </div>
                     </div>
                     <div class="uk-width-1-4@s">
@@ -78,6 +83,12 @@
   "ip": {
     "addr": "{{ ip.addr }}",
     "version": "{{ ip.version }}"
+  },
+  "location": {
+    "city": "{{ location.city }}",
+    "country": "{{ location.country }}",
+    "latitude": {{ location.latitude }},
+    "longitude": {{ location.longitude }}
   },
   "user_agent": {
     "browser_type": "{{ user_agent.browser_type }}",

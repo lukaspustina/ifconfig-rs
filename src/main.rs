@@ -49,13 +49,11 @@ impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
     }
 }
 
-fn init_user_agent_parser() -> UserAgentParser { UserAgentParser::new() }
-
 #[get("/", format = "application/json", rank=1)]
 #[allow(unknown_lints)] // for clippy
 #[allow(needless_pass_by_value)] // params are passed by value
-fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>) -> Option<Json<JsonValue>> {
-    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser);
+fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityReader>) -> Option<Json<JsonValue>> {
+    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db);
 
     // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
     match serde_json::to_value(ifconfig){
@@ -67,8 +65,8 @@ fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
 #[get("/", rank=2)]
 #[allow(unknown_lints)] // for clippy
 #[allow(needless_pass_by_value)] // params are passed by value
-fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>) -> Template {
-    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser);
+fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityReader>) -> Template {
+    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db);
 
     #[derive(Serialize)]
     struct Context<'a> {
@@ -121,18 +119,25 @@ impl Fairing for HerokuForwardedFor {
     }
 }
 
+fn init_user_agent_parser() -> UserAgentParser { UserAgentParser::new() }
+fn init_geoip_city_reader(db: &str) -> GeoIpCityReader { GeoIpCityReader::open(db).expect("Failed to load GeoIP City DB") }
+
 fn main() {
-    let mut rocket = rocket::ignite();
-
-    rocket = match rocket.config().get_str("runtime_environment") {
-        Ok("heroku") => rocket.attach(HerokuForwardedFor::default()),
-        _ => rocket
-    };
-
-    rocket
+    let mut rocket = rocket::ignite()
         .catch(errors![not_found])
         .mount("/", routes![index_html, index_json])
         .attach(Template::fairing())
-        .manage(init_user_agent_parser())
-        .launch();
+        .manage(init_user_agent_parser());
+
+    rocket = match rocket.config().get_str("runtime_environment") {
+        Ok("heroku") => rocket.attach(HerokuForwardedFor::default()),
+        _ => rocket,
+    };
+
+    rocket = match rocket.config().get_str("geoip_city_db").map(|s| s.to_string()) {
+        Ok(db) => rocket.manage(init_geoip_city_reader(&db)),
+        _ => rocket,
+    };
+
+    rocket.launch();
 }

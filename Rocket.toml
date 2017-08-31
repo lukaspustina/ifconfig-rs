@@ -1,6 +1,10 @@
 [development]
 log = "normal"
+geoip_city_db = "geoip/GeoLite2-City.mmdb"
+geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"
 
 [production]
 runtime_environment = "heroku"
+geoip_city_db = "geoip/GeoLite2-City.mmdb"
+geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"
 
