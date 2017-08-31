@@ -23,18 +23,18 @@
             <h1 class="uk-heading-primary uk-heading-line"><span>{{ pkg_name }}</span></h1>
             {{#with ifconfig}}
             <div class="uk-grid-match uk-grid-small" uk-grid>
-                    <div class="uk-width-1-1@s">
+                    <div class="uk-width-1-1@m">
                         <div>
                             <h1 class="mono">{{ ip.addr }}</h1>
                         </div>
                     </div>
-                    <div class="uk-width-1-4@s">
+                    <div class="uk-width-1-4@m">
                         <div>
                             <h4>Hostname</h4>
                             <span class="mono">{{ host.name }}</span>
                         </div>
                     </div>
-                     <div class="uk-width-1-4@s">
+                     <div class="uk-width-1-4@m">
                         <div>
                             <h4>Location</h4>
                             <span class="mono">{{#if location.city }}{{ location.city }}{{else}}-{{/if}}, {{#if location.country}}{{ location.country }}{{else}}-{{/if}}</span>
@@ -47,12 +47,12 @@
                             <span class="mono">{{#if isp.name }}{{ isp.name }}{{/if}}</span>
                         </div>
                     </div>
-                    <div class="uk-width-1-4@s">
+                    <div class="uk-width-1-4@m">
                         <span>
                             <h4>User Agent</h4>
                             <span class="mono">{{ user_agent.name }}, {{ user_agent.version }}</span>
                     </div>
-                    <div class="uk-width-1-4@s">
+                    <div class="uk-width-1-4@m">
                         <div>
                             <h4>Operating System</h4>
                             <span class="mono">{{ user_agent.os }}, {{ user_agent.os_version }}</span>
@@ -65,7 +65,7 @@
                     <h3 class="uk-accordion-title"><span class="uk-label">API</span></h3>
                     <div class="uk-accordion-content">
                         <div class="uk-grid-match uk-grid-small" uk-grid>
-                            <div class="uk-width-1-1@s">
+                            <div class="uk-width-1-1@m">
                                 <div>
                                     Every resource supports plain as well as JSON responses. JSON responses can be
                                     requested by setting the corresponding <span class="mono">Accept</span> header,
