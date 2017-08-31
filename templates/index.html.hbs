@@ -85,17 +85,23 @@
                         <div class="uk-grid-match uk-grid-small" uk-grid>
                             <div class="uk-width-1-1@m">
                                 <div>
-                                    <p>Every resource supports plain as well as JSON responses. JSON responses can be
+                                    <p>Every resource supports plain as well as JSON GET requests. JSON responses can be
                                     requested by setting the corresponding <span class="mono">Accept</span> header,
                                     i.e., <span class="mono">Accept: application/json</span>. {{ pkg_name }} tries to
                                     identify whether a request is sent by CLI client and then only sends the resource's
                                     base information. In this way for example, a simple <span class="mono"> curl
-                                    {{ base_url }}{{ uri }}</span> retrieves your IP address.</p>
-                                    <p>For any other browser {{ pkg_name }} returns this beautiful HTML page you're
-                                    currently looking at.</p>
-                                    <dl class="uk-description-list">
-                                        <dt>GET <span class="mono">/</span></dt>
-                                        <dd>
+                                    {{ base_url }}{{ uri }}</span> retrieves your IP address. For any other browser
+                                    {{ pkg_name }} returns this beautiful HTML page you're currently looking at.</p>
+                                    <ul uk-tab>
+                                        <li class="uk-active"><a href="#"><span class="mono">/</span></a></li>
+                                        <li><a href="#"><span class="mono">/ip</span></a></li>
+                                        <li><a href="#"><span class="mono">/hostname</span></a></li>
+                                        <li><a href="#"><span class="mono">/location</span></a></li>
+                                        <li><a href="#"><span class="mono">/isp</span></a></li>
+                                        <li><a href="#"><span class="mono">/user_agent</span></a></li>
+                                    </ul>
+                                    <ul class="uk-switcher uk-margin">
+                                        <li>
                                             <ul class="uk-list uk-list-bullet">
                                                 <li>
                                                     <dl class="uk-description-list">
@@ -115,11 +121,8 @@
                                                     </dl>
                                                 </li>
                                             </ul>
-                                        </dd>
-                                    </dl>
-                                    <dl class="uk-description-list">
-                                        <dt>GET <span class="mono">/ip</span></dt>
-                                        <dd>
+                                        </li>
+                                        <li>
                                             <ul class="uk-list uk-list-bullet">
                                                 <li>
                                                     <dl class="uk-description-list">
@@ -139,11 +142,8 @@
                                                     </dl>
                                                 </li>
                                             </ul>
-                                        </dd>
-                                    </dl>
-                                    <dl class="uk-description-list">
-                                        <dt>GET <span class="mono">/hostname</span></dt>
-                                        <dd>
+                                        </li>
+                                        <li>
                                             <ul class="uk-list uk-list-bullet">
                                                 <li>
                                                     <dl class="uk-description-list">
@@ -163,11 +163,8 @@
                                                     </dl>
                                                 </li>
                                             </ul>
-                                        </dd>
-                                    </dl>
-                                    <dl class="uk-description-list">
-                                        <dt>GET <span class="mono">/location</span></dt>
-                                        <dd>
+                                        </li>
+                                        <li>
                                             <ul class="uk-list uk-list-bullet">
                                                 <li>
                                                     <dl class="uk-description-list">
@@ -187,11 +184,8 @@
                                                     </dl>
                                                 </li>
                                             </ul>
-                                        </dd>
-                                    </dl>
-                                    <dl class="uk-description-list">
-                                        <dt>GET <span class="mono">/isp</span></dt>
-                                        <dd>
+                                        </li>
+                                        <li>
                                             <ul class="uk-list uk-list-bullet">
                                                 <li>
                                                     <dl class="uk-description-list">
@@ -211,11 +205,8 @@
                                                     </dl>
                                                 </li>
                                             </ul>
-                                        </dd>
-                                    </dl>
-                                    <dl class="uk-description-list">
-                                        <dt>GET <span class="mono">/user_agent</span></dt>
-                                        <dd>
+                                        </li>
+                                        <li>
                                             <ul class="uk-list uk-list-bullet">
                                                 <li>
                                                     <dl class="uk-description-list">
@@ -235,8 +226,8 @@
                                                     </dl>
                                                 </li>
                                             </ul>
-                                        </dd>
-                                    </dl>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
