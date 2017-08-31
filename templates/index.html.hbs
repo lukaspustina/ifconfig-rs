@@ -49,13 +49,13 @@
                             <h1 class="mono">{{ ip.addr }}</h1>
                         </div>
                     </div>
-                    <div class="uk-width-1-4@m uk-text-break">
+                    <div class="uk-width-expand@m">
                         <div>
                             <h4>Hostname</h4>
-                            <span class="mono">{{ host.name }}</span>
+                            <span class="mono">{{ host.name }}.lukas.pustina.de</span>
                         </div>
                     </div>
-                     <div class="uk-width-1-4@m uk-text-break">
+                     <div class="uk-width-expand@m">
                         <div>
                             <h4>Location</h4>
                             <span class="mono">{{#if location.city }}{{ location.city }}{{else}}-{{/if}}, {{#if location.country}}{{ location.country }}{{else}}-{{/if}}</span>
@@ -68,12 +68,12 @@
                             <span class="mono">{{#if isp.name }}{{ isp.name }}{{else}}-{{/if}}</span>
                         </div>
                     </div>
-                    <div class="uk-width-1-4@m">
+                    <div class="uk-width-expand@m">
                         <span>
                             <h4>User Agent</h4>
                             <span class="mono">{{ user_agent.name }}, {{ user_agent.version }}</span>
                     </div>
-                    <div class="uk-width-1-4@m">
+                    <div class="uk-width-expand@m">
                         <div>
                             <h4>Operating System</h4>
                             <span class="mono">{{ user_agent.os }}, {{ user_agent.os_version }}</span>
