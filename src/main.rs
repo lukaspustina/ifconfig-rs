@@ -68,7 +68,6 @@ fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
 #[allow(needless_pass_by_value)] // params are passed by value
 fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Template {
     let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db, &geoip_asn_db);
-    let json = serde_json::to_string_pretty(&ifconfig).ok();
 
     #[derive(Serialize)]
     struct Context<'a> {
@@ -77,7 +76,6 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
         version: &'a str,
         base_url: &'a str,
         uri: &'a str,
-        json: Option<String>,
     }
 
     let context = Context{
@@ -86,7 +84,6 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
         version: PKG_VERSION,
         base_url: BASE_URL,
         uri: req_info.uri,
-        json,
     };
     Template::render("index", &context)
 }

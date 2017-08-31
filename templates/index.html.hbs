@@ -7,6 +7,24 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.28/js/uikit.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.28/js/uikit-icons.min.js"></script>
+        <script>
+            var get_ifconfig_json = function(url, selector) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    datatype: 'json',
+                    success: function(result) {
+                        var str = JSON.stringify(result, null, 2);
+                        $(selector).append(str);
+                    },
+                    error: function(result) {
+                        console.log(result);
+                        var str = JSON.stringify(result, null, 2);
+                        $(selector).append(str);
+                    }
+                });
+            };
+        </script>
         <style>
             .mono {
                 font-family: Monospace;
@@ -44,7 +62,7 @@
                                 {{/if}}
                             {{/if}}
                             <br>
-                            <span class="mono">{{#if isp.name }}{{ isp.name }}{{/if}}</span>
+                            <span class="mono">{{#if isp.name }}{{ isp.name }}{{else}}-{{/if}}</span>
                         </div>
                     </div>
                     <div class="uk-width-1-4@m">
@@ -67,9 +85,14 @@
                         <div class="uk-grid-match uk-grid-small" uk-grid>
                             <div class="uk-width-1-1@m">
                                 <div>
-                                    Every resource supports plain as well as JSON responses. JSON responses can be
+                                    <p>Every resource supports plain as well as JSON responses. JSON responses can be
                                     requested by setting the corresponding <span class="mono">Accept</span> header,
-                                    i.e., <span class="mono">Accept: application/json</span>.
+                                    i.e., <span class="mono">Accept: application/json</span>. {{ pkg_name }} tries to
+                                    identify whether a request is sent by CLI client and then only sends the resource's
+                                    base information. In this way for example, a simple <span class="mono"> curl
+                                    {{ base_url }}{{ uri }}</span> retrieves your IP address.</p>
+                                    <p>For any other browser {{ pkg_name }} returns this beautiful HTML page you're
+                                    currently looking at.</p>
                                     <dl class="uk-description-list">
                                         <dt>GET <span class="mono">/</span></dt>
                                         <dd>
@@ -78,20 +101,17 @@
                                                     <dl class="uk-description-list">
                                                         <dt>Plain</dt>
                                                         <dd>
-                                                            <p>For this resource, {{ pkg_name }} tries to identify
-                                                            whether a request is sent by CLI client and then only send
-                                                            the IP address. In this way, a simple <span class="mono">
-                                                            curl {{ base_url }}{{ uri }}</span> retrieves your IP
-                                                            address.</p>
-                                                            <p>For any other browser {{ pkg_name }} returns this
-                                                            beautiful HTML page you're currently looking at.</p>
+                                                            <pre class="mono-pre">{{ ifconfig.ip.addr }}</pre>
                                                         </dd>
                                                     </dl>
                                                 </li>
                                                 <li>
                                                     <dl class="uk-description-list">
                                                         <dt>JSON</dt>
-                                                        <dd><pre class="mono-pre">{{ json }}</pre></dd>
+                                                        <script>
+                                                            $(document).ready(get_ifconfig_json("/", "#api-json-slash"));
+                                                        </script>
+                                                        <dd><pre id="api-json-slash" class="mono-pre"></pre></dd>
                                                     </dl>
                                                 </li>
                                             </ul>
@@ -100,26 +120,121 @@
                                     <dl class="uk-description-list">
                                         <dt>GET <span class="mono">/ip</span></dt>
                                         <dd>
+                                            <ul class="uk-list uk-list-bullet">
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>Plain</dt>
+                                                        <dd>
+                                                            <pre class="mono-pre">{{ ifconfig.ip.addr }}</pre>
+                                                        </dd>
+                                                    </dl>
+                                                </li>
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>JSON</dt>
+                                                        <script>
+                                                            $(document).ready(get_ifconfig_json("/ip", "#api-json-ip"));
+                                                        </script>
+                                                        <dd><pre id="api-json-ip" class="mono-pre"></pre></dd>
+                                                    </dl>
+                                                </li>
+                                            </ul>
                                         </dd>
                                     </dl>
                                     <dl class="uk-description-list">
                                         <dt>GET <span class="mono">/hostname</span></dt>
                                         <dd>
+                                            <ul class="uk-list uk-list-bullet">
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>Plain</dt>
+                                                        <pre class="mono-pre">{{ ifconfig.host.name }}</pre>
+                                                        <dd>
+                                                        </dd>
+                                                    </dl>
+                                                </li>
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>JSON</dt>
+                                                        <script>
+                                                            $(document).ready(get_ifconfig_json("/hostname", "#api-json-hostname"));
+                                                        </script>
+                                                        <dd><pre id="api-json-hostname" class="mono-pre"></pre></dd>
+                                                    </dl>
+                                                </li>
+                                            </ul>
                                         </dd>
                                     </dl>
                                     <dl class="uk-description-list">
                                         <dt>GET <span class="mono">/location</span></dt>
                                         <dd>
+                                            <ul class="uk-list uk-list-bullet">
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>Plain</dt>
+                                                        <dd>
+                                                            <pre class="mono-pre">{{#if ifconfig.location.city }}{{ ifconfig.location.city }}{{else}}-{{/if}}, {{#if ifconfig.location.country}}{{ ifconfig.location.country }}{{else}}-{{/if}}</pre>
+                                                        </dd>
+                                                    </dl>
+                                                </li>
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>JSON</dt>
+                                                        <script>
+                                                            $(document).ready(get_ifconfig_json("/location", "#api-json-location"));
+                                                        </script>
+                                                        <dd><pre id="api-json-location" class="mono-pre"></pre></dd>
+                                                    </dl>
+                                                </li>
+                                            </ul>
                                         </dd>
                                     </dl>
                                     <dl class="uk-description-list">
                                         <dt>GET <span class="mono">/isp</span></dt>
                                         <dd>
+                                            <ul class="uk-list uk-list-bullet">
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>Plain</dt>
+                                                        <dd>
+                                                            <pre class="mono-pre">{{#if isp.name }}{{ isp.name }}{{else}}-{{/if}}</pre>
+                                                        </dd>
+                                                    </dl>
+                                                </li>
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>JSON</dt>
+                                                        <script>
+                                                            $(document).ready(get_ifconfig_json("/isp", "#api-json-isp"));
+                                                        </script>
+                                                        <dd><pre id="api-json-isp" class="mono-pre"></pre></dd>
+                                                    </dl>
+                                                </li>
+                                            </ul>
                                         </dd>
                                     </dl>
                                     <dl class="uk-description-list">
                                         <dt>GET <span class="mono">/user_agent</span></dt>
                                         <dd>
+                                            <ul class="uk-list uk-list-bullet">
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>Plain</dt>
+                                                        <dd>
+                                                            <pre class="mono-pre">{{ ifconfig.user_agent.name }}, {{ ifconfig.user_agent.version }}</pre>
+                                                        </dd>
+                                                    </dl>
+                                                </li>
+                                                <li>
+                                                    <dl class="uk-description-list">
+                                                        <dt>JSON</dt>
+                                                        <script>
+                                                            $(document).ready(get_ifconfig_json("/user_agent", "#api-json-user_agent"));
+                                                        </script>
+                                                        <dd><pre id="api-json-user_agent" class="mono-pre"></pre></dd>
+                                                    </dl>
+                                                </li>
+                                            </ul>
                                         </dd>
                                     </dl>
                                 </div>
@@ -180,8 +295,11 @@
                                     <dl class="uk-description-list">
                                         <dt>curl for Json</dt>
                                         <dd>
-<pre class="mono-pre">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}
-{{ json }}</pre>
+                                            <script>
+                                                $(document).ready(get_ifconfig_json("/isp", "#cli-curl-json-slash"));
+                                            </script>
+<pre class="mono-pre" id="cli-curl-json-slash">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}
+</pre>
                                         </dd>
                                     </dl>
                                 </div>
