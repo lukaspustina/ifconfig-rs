@@ -76,30 +76,7 @@
                                         <dt>curl for Json</dt>
                                         <dd>
 <pre class="ifconfig">> curl -H "Accept: application/json" {{ ../base_url }}{{ ../uri }}
-{
-  "host": {
-    "name": "{{ host.name }}"
-  },
-  "ip": {
-    "addr": "{{ ip.addr }}",
-    "version": "{{ ip.version }}"
-  },
-  "location": {
-    "city": "{{ location.city }}",
-    "country": "{{ location.country }}",
-    "latitude": {{ location.latitude }},
-    "longitude": {{ location.longitude }}
-  },
-  "user_agent": {
-    "browser_type": "{{ user_agent.browser_type }}",
-    "category": "{{ user_agent.category }}",
-    "name": "{{ user_agent.name }}",
-    "os": "{{ user_agent.os }}",
-    "os_version": "{{ user_agent.os_version }}",
-    "vendor": "{{ user_agent.vendor }}",
-    "version": "{{ user_agent.version }}"
-  }
-}</pre>
+{{ ../json }}</pre>
                                         </dd>
                                     </dl>
                                 </div>
