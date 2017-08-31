@@ -13,8 +13,8 @@
         <div class="uk-container">
             <h1>ifconfig.rs</h1>
             <hr>
+            {{#with ifconfig}}
             <div class="uk-grid-match uk-grid-small" uk-grid>
-                {{#with ifconfig}}
                     <div class="uk-width-1-1@s">
                         <div>
                             <h1 style="font-family: Monospace">{{ ip.addr }}</h1>
@@ -22,24 +22,39 @@
                     </div>
                     <div class="uk-width-1-3@s">
                         <div>
-                            <h3>Hostname</h3>
+                            <h4>Hostname</h4>
                             <code>{{ host.name }}</code>
                         </div>
                     </div>
                     <div class="uk-width-1-3@s">
                         <div>
-                            <h3>User Agent</h3>
+                            <h4>User Agent</h4>
                             <code>{{ user_agent.name }}</code>, version <code>{{ user_agent.version }}</code>
                         </div>
                     </div>
                     <div class="uk-width-1-3@s">
                         <div>
-                            <h3>Operating System</h3>
+                            <h4>Operating System</h4>
                             <code>{{ user_agent.os }}</code>, version <code>{{ user_agent.os_version }}</code>
                         </div>
                     </div>
-                {{/with}}
             </div>
+            <ul uk-accordion="multiple: true">
+                <li>
+                    <h3 class="uk-accordion-title">CLI Client Examples</h3>
+                    <div class="uk-accordion-content">
+                        <div class="uk-grid-match uk-grid-small" uk-grid>
+                            <div class="uk-width-1-3@s">
+                                <div>
+                                    <h4>curl</h4>
+                                    <code>curl -H "Accept: application/json" http://ifconfig-rs.herokuapp.com</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            {{/with}}
             <hr>
             <h6>Yet another <em>what's my IP</em> service &mdash; <a href="https://github.com/lukaspustina/ifconfig-rs">ifconfig.rs</a> &mdash; version {{ version }}</h6>
         </div>
