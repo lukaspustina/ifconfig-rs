@@ -10,10 +10,15 @@ extern crate serde_json;
 use ifconfig_rs::*;
 use rocket::http::Status;
 use rocket_contrib::{Json, Value as JsonValue};
+use rocket::{Data, Response, Request, State, Outcome};
+use rocket::fairing::{Fairing, Info, Kind};
 use rocket::request::{self, FromRequest};
-use rocket::{Request, State, Outcome};
+use rocket::response::Redirect;
 use rocket_contrib::Template;
+use std::str::FromStr;
+use std::net::IpAddr;
 use std::net::SocketAddr;
+
 
 static VERSION: &'static str = env!("CARGO_PKG_VERSION");
 static BASE_URL: &'static str = "http://ifconfig.rs";
@@ -82,10 +87,10 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
     Template::render("index", &context)
 }
 
-use rocket::{Data, Response};
-use rocket::fairing::{Fairing, Info, Kind};
-use std::net::IpAddr;
-use std::str::FromStr;
+#[error(404)]
+fn not_found(_: &Request) -> Redirect {
+    Redirect::to("/")
+}
 
 #[derive(Default)]
 struct HerokuForwardedFor;
@@ -125,6 +130,7 @@ fn main() {
     };
 
     rocket
+        .catch(errors![not_found])
         .mount("/", routes![index_html, index_json])
         .attach(Template::fairing())
         .manage(init_user_agent_parser())
