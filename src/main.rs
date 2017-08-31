@@ -20,7 +20,8 @@ use std::net::IpAddr;
 use std::net::SocketAddr;
 
 
-static VERSION: &'static str = env!("CARGO_PKG_VERSION");
+static PGK_NAME: &'static str = "ifconfig.rs";
+static PKG_VERSION: &'static str = env!("CARGO_PKG_VERSION");
 static BASE_URL: &'static str = "http://ifconfig.rs";
 
 pub struct RequesterInfo<'a> {
@@ -72,6 +73,7 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
     #[derive(Serialize)]
     struct Context<'a> {
         ifconfig: Ifconfig<'a>,
+        pkg_name: &'a str,
         version: &'a str,
         base_url: &'a str,
         uri: &'a str,
@@ -80,7 +82,8 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
 
     let context = Context{
         ifconfig,
-        version: VERSION,
+        pkg_name: PGK_NAME,
+        version: PKG_VERSION,
         base_url: BASE_URL,
         uri: req_info.uri,
         json,
