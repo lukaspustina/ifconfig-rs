@@ -7,6 +7,18 @@ pub type UserAgentParser = woothee::parser::Parser;
 pub type UserAgentParserResult<'a> = woothee::parser::WootheeResult<'a>;
 
 #[derive(Serialize)]
+pub struct Ip<'a> {
+    addr: String,
+    version: &'a str,
+}
+
+#[derive(Serialize)]
+pub struct Host<'a> {
+    name: &'a str,
+}
+
+
+#[derive(Serialize)]
 pub struct UserAgent<'a> {
     pub name: &'a str,
     pub category: &'a str,
@@ -32,14 +44,9 @@ impl<'a> From<UserAgentParserResult<'a>> for UserAgent<'a> {
 }
 
 #[derive(Serialize)]
-pub struct Ip<'a> {
-    addr: String,
-    version: &'a str,
-}
-
-#[derive(Serialize)]
 pub struct Ifconfig<'a> {
     ip: Ip<'a>,
+    host: Host<'a>,
     user_agent: Option<UserAgent<'a>>,
 }
 
@@ -47,10 +54,13 @@ pub fn get_ifconfig<'a>(remote: &'a SocketAddr, user_agent: &Option<&'a str>, us
     let ip_addr = format!("{}", remote.ip());
     let ip_version = if remote.is_ipv4() { "4" } else { "6" };
     let ip = Ip { addr: ip_addr, version: ip_version };
+
+    let host = Host { name: "unknown" };
+
     let user_agent = user_agent
         .and_then(|s| user_agent_parser.parse(s))
         .map(|res| res.into());
 
-    Ifconfig { ip: ip, user_agent: user_agent }
+    Ifconfig { ip, host, user_agent }
 }
 
