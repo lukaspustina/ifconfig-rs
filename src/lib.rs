@@ -69,8 +69,8 @@ pub fn get_ifconfig<'a>(remote: &'a SocketAddr, user_agent: &Option<&'a str>, us
     let ip_version = if remote.is_ipv4() { "4" } else { "6" };
     let ip = Ip { addr: ip_addr, version: ip_version };
 
-    //let city: Option<geoip2::City> = geoip_city_db.lookup(remote.ip()).ok();
-    let city: Option<geoip2::City> = geoip_city_db.lookup(IpAddr::from_str("89.0.120.7").unwrap()).ok();
+    let city: Option<geoip2::City> = geoip_city_db.lookup(remote.ip()).ok();
+    //let city: Option<geoip2::City> = geoip_city_db.lookup(IpAddr::from_str("89.0.120.7").unwrap()).ok();
     let location = city
         .map(|c|Location {
             city: c.city.and_then( |e| e.names).and_then( |mut h| h.remove("en")),
