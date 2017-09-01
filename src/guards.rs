@@ -1,4 +1,4 @@
-use rocket::{Request, Outcome};
+use rocket::{Outcome, Request};
 use rocket::http::Status;
 use rocket::request::{self, FromRequest};
 use std::net::SocketAddr;

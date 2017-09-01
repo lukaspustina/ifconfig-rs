@@ -92,7 +92,7 @@ pub struct IfconfigParam<'a> {
     pub user_agent_header: &'a Option<&'a str>,
     pub user_agent_parser: &'a UserAgentParser,
     pub geoip_city_db: &'a GeoIpCityDb,
-    pub geoip_asn_db: &'a GeoIpAsnDb
+    pub geoip_asn_db: &'a GeoIpAsnDb,
 }
 
 pub fn get_ifconfig<'a>(param: &'a IfconfigParam<'a>) -> Ifconfig<'a> {
@@ -101,25 +101,48 @@ pub fn get_ifconfig<'a>(param: &'a IfconfigParam<'a>) -> Ifconfig<'a> {
 
     let ip_addr = format!("{}", param.remote.ip());
     let ip_version = if param.remote.is_ipv4() { "4" } else { "6" };
-    let ip = Ip { addr: ip_addr, version: ip_version };
+    let ip = Ip {
+        addr: ip_addr,
+        version: ip_version,
+    };
 
-    let tcp = Tcp { port: param.remote.port() };
+    let tcp = Tcp {
+        port: param.remote.port(),
+    };
 
     let geo_city: Option<geoip2::City> = param.geoip_city_db.0.lookup(param.remote.ip()).ok();
-    let location = geo_city
-        .map(|c| Location {
-            city: c.city.and_then(|e| e.names).and_then(|mut h| h.remove("en")),
-            country: c.country.and_then(|e| e.names).and_then(|mut h| h.remove("en")),
+    let location = geo_city.map(|c| {
+        Location {
+            city: c.city
+                .and_then(|e| e.names)
+                .and_then(|mut h| h.remove("en")),
+            country: c.country
+                .and_then(|e| e.names)
+                .and_then(|mut h| h.remove("en")),
             latitude: c.location.as_ref().and_then(|l| l.latitude),
             longitude: c.location.as_ref().and_then(|l| l.longitude),
-        });
+        }
+    });
 
     let geo_isp: Option<geoip2::Isp> = param.geoip_asn_db.0.lookup(param.remote.ip()).ok();
-    let isp = geo_isp.map(|isp| Isp { name: isp.autonomous_system_organization });
+    let isp = geo_isp.map(|isp| {
+        Isp {
+            name: isp.autonomous_system_organization,
+        }
+    });
 
-    let user_agent = param.user_agent_header
+    let user_agent = param
+        .user_agent_header
         .and_then(|s| param.user_agent_parser.parse(s))
         .map(|res| res.into());
 
-    Ifconfig { host, ip, tcp, location, isp, user_agent, user_agent_header: *param.user_agent_header }
+    Ifconfig {
+        host,
+        ip,
+        tcp,
+        location,
+        isp,
+        user_agent,
+        user_agent_header: *param.user_agent_header,
+    }
 }
