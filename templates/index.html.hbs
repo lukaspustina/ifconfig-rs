@@ -15,7 +15,8 @@
                 $.ajax({
                     url: url,
                     type: 'GET',
-                    datatype: 'json',
+                    cache: false,
+                    dataType: 'json',
                     success: function(result) {
                         var str = JSON.stringify(result, null, 2);
                         $(selector).append(str);
@@ -24,6 +25,21 @@
                         console.log(result);
                         var str = JSON.stringify(result, null, 2);
                         $(selector).append(str);
+                    }
+                });
+            };
+            var get_ifconfig_plain = function(url, selector) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'text',
+                    success: function(result) {
+                        $(selector).append(result);
+                    },
+                    error: function(result) {
+                        console.log(result);
+                        $(selector).append(result);
                     }
                 });
             };
@@ -112,18 +128,19 @@
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>Plain</dt>
-                                                                <dd>
-                                                                    <pre class="mono-pre">{{ ifconfig.ip.addr }}</pre>
-                                                                </dd>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_plain("/", "#api-plain-root"));
+                                                                </script>
+                                                                <dd><pre id="api-plain-root" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>JSON</dt>
                                                                 <script>
-                                                                    $(document).ready(get_ifconfig_json("/", "#api-json-slash"));
+                                                                    $(document).ready(get_ifconfig_json("/", "#api-json-root"));
                                                                 </script>
-                                                                <dd><pre id="api-json-slash" class="mono-pre"></pre></dd>
+                                                                <dd><pre id="api-json-root" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                     </ul>
@@ -133,9 +150,10 @@
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>Plain</dt>
-                                                                <dd>
-                                                                    <pre class="mono-pre">{{ ifconfig.ip.addr }}</pre>
-                                                                </dd>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_plain("/ip", "#api-plain-ip"));
+                                                                </script>
+                                                                <dd><pre id="api-plain-ip" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                         <li>
@@ -154,9 +172,10 @@
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>Plain</dt>
-                                                                <dd>
-                                                                    <pre class="mono-pre">{{ ifconfig.tcp.port }}</pre>
-                                                                </dd>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_plain("/tcp", "#api-plain-tcp"));
+                                                                </script>
+                                                                <dd><pre id="api-plain-tcp" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                         <li>
@@ -175,9 +194,10 @@
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>Plain</dt>
-                                                                <dd>
-                                                                    <pre class="mono-pre">{{ ifconfig.host.name }}</pre>
-                                                                </dd>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_plain("/host", "#api-plain-host"));
+                                                                </script>
+                                                                <dd><pre id="api-plain-host" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                         <li>
@@ -196,9 +216,10 @@
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>Plain</dt>
-                                                                <dd>
-                                                                    <pre class="mono-pre">{{#if ifconfig.location.city }}{{ ifconfig.location.city }}{{else}}-{{/if}}, {{#if ifconfig.location.country}}{{ ifconfig.location.country }}{{else}}-{{/if}}</pre>
-                                                                </dd>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_plain("/location", "#api-plain-location"));
+                                                                </script>
+                                                                <dd><pre id="api-plain-location" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                         <li>
@@ -217,9 +238,10 @@
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>Plain</dt>
-                                                                <dd>
-                                                                    <pre class="mono-pre">{{#if ifconfig.isp.name }}{{ ifconfig.isp.name }}{{else}}-{{/if}}</pre>
-                                                                </dd>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_plain("/isp", "#api-plain-isp"));
+                                                                </script>
+                                                                <dd><pre id="api-plain-isp" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                         <li>
@@ -238,9 +260,10 @@
                                                         <li>
                                                             <dl class="uk-description-list">
                                                                 <dt>Plain</dt>
-                                                                <dd>
-                                                                    <pre class="mono-pre">{{ ifconfig.user_agent.name }}, {{ ifconfig.user_agent.version }}, {{ ifconfig.user_agent.os }}, {{ ifconfig.user_agent.os_version }} </pre>
-                                                                </dd>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_plain("/user_agent", "#api-plain-user_agent"));
+                                                                </script>
+                                                                <dd><pre id="api-plain-user_agent" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                         <li>

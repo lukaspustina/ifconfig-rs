@@ -5,18 +5,18 @@ use woothee;
 
 #[derive(Serialize)]
 pub struct Host {
-    name: String,
+    pub name: String,
 }
 
 #[derive(Serialize)]
 pub struct Ip<'a> {
-    addr: String,
-    version: &'a str,
+    pub addr: String,
+    pub version: &'a str,
 }
 
 #[derive(Serialize)]
 pub struct Tcp {
-    port: u16,
+    pub port: u16,
 }
 
 pub struct GeoIpCityDb(pub maxminddb::Reader);

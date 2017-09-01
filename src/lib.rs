@@ -1,5 +1,8 @@
 extern crate dns_lookup;
+#[macro_use]
+extern crate lazy_static;
 extern crate maxminddb;
+extern crate regex;
 extern crate rocket;
 extern crate rocket_contrib;
 #[macro_use]
