@@ -23,7 +23,7 @@ pub struct GeoIpCityDb(pub maxminddb::Reader);
 
 impl GeoIpCityDb {
     pub fn new(db_path: &str) -> Option<Self> {
-        maxminddb::Reader::open(db_path).ok().map(|reader| GeoIpCityDb(reader))
+        maxminddb::Reader::open(db_path).ok().map(GeoIpCityDb)
     }
 }
 
@@ -31,7 +31,7 @@ pub struct GeoIpAsnDb(pub maxminddb::Reader);
 
 impl GeoIpAsnDb {
     pub fn new(db_path: &str) -> Option<Self> {
-        maxminddb::Reader::open(db_path).ok().map(|reader| GeoIpAsnDb(reader))
+        maxminddb::Reader::open(db_path).ok().map(GeoIpAsnDb)
     }
 }
 

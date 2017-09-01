@@ -1,7 +1,7 @@
 #![feature(plugin)]
 #![plugin(rocket_codegen)]
-#[allow(unknown_lints)] // for clippy
-#[allow(needless_pass_by_value)] // params are passed by value
+#![allow(unknown_lints)] // for clippy
+#![allow(needless_pass_by_value)] // params are passed by value
 
 extern crate ifconfig_rs;
 extern crate rocket;

@@ -1,3 +1,6 @@
+#![allow(unknown_lints)] // for clippy
+#![allow(needless_pass_by_value)] // params are passed by value
+
 use backend::*;
 use guards::*;
 use rocket::State;
