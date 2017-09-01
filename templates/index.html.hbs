@@ -6,10 +6,10 @@
         <meta name="keywords" content="what's my ip,ifconfig,ip address,json">
         <meta name="author" content="Lukas Pustina">
         <title>ifconfig.rs</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.28/css/uikit.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/css/uikit.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.28/js/uikit.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.28/js/uikit-icons.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/js/uikit.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/js/uikit-icons.min.js"></script>
         <script>
             var get_ifconfig_json = function(url, selector) {
                 $.ajax({
@@ -100,6 +100,7 @@
                                             <ul uk-tab>
                                                 <li class="uk-active"><a href="#"><span class="mono">/</span></a></li>
                                                 <li><a href="#"><span class="mono">/ip</span></a></li>
+                                                <li><a href="#"><span class="mono">/tcp</span></a></li>
                                                 <li><a href="#"><span class="mono">/hostname</span></a></li>
                                                 <li><a href="#"><span class="mono">/location</span></a></li>
                                                 <li><a href="#"><span class="mono">/isp</span></a></li>
@@ -144,6 +145,27 @@
                                                                     $(document).ready(get_ifconfig_json("/ip", "#api-json-ip"));
                                                                 </script>
                                                                 <dd><pre id="api-json-ip" class="mono-pre"></pre></dd>
+                                                            </dl>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <ul class="uk-list uk-list-bullet">
+                                                        <li>
+                                                            <dl class="uk-description-list">
+                                                                <dt>Plain</dt>
+                                                                <dd>
+                                                                    <pre class="mono-pre">{{ ifconfig.tcp.port }}</pre>
+                                                                </dd>
+                                                            </dl>
+                                                        </li>
+                                                        <li>
+                                                            <dl class="uk-description-list">
+                                                                <dt>JSON</dt>
+                                                                <script>
+                                                                    $(document).ready(get_ifconfig_json("/tcp", "#api-json-tcp"));
+                                                                </script>
+                                                                <dd><pre id="api-json-tcp" class="mono-pre"></pre></dd>
                                                             </dl>
                                                         </li>
                                                     </ul>
