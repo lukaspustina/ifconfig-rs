@@ -4,7 +4,8 @@
 extern crate ifconfig_rs;
 extern crate rocket;
 extern crate rocket_contrib;
-#[macro_use] extern crate serde_derive;
+#[macro_use]
+extern crate serde_derive;
 extern crate serde_json;
 
 use ifconfig_rs::*;
@@ -37,7 +38,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
         let remote = if let Some(remote) = req.remote() {
             remote
         } else {
-            return Outcome::Failure((Status::BadRequest, ()))
+            return Outcome::Failure((Status::BadRequest, ()));
         };
         let user_agent = req.headers().get_one("User-Agent");
 
@@ -50,24 +51,38 @@ impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
     }
 }
 
-#[get("/", format = "application/json", rank=1)]
+#[get("/", format = "application/json", rank = 1)]
 #[allow(unknown_lints)] // for clippy
 #[allow(needless_pass_by_value)] // params are passed by value
 fn index_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
-    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db, &geoip_asn_db);
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
 
     // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
-    match serde_json::to_value(ifconfig){
+    match serde_json::to_value(ifconfig) {
         Ok(json) => Some(Json(json)),
         Err(_) => None
     }
 }
 
-#[get("/", rank=2)]
+#[get("/", rank = 2)]
 #[allow(unknown_lints)] // for clippy
 #[allow(needless_pass_by_value)] // params are passed by value
 fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Template {
-    let ifconfig = get_ifconfig(&req_info.remote, &req_info.user_agent, &user_agent_parser, &geoip_city_db, &geoip_asn_db);
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
 
     #[derive(Serialize)]
     struct Context<'a> {
@@ -78,7 +93,7 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
         uri: &'a str,
     }
 
-    let context = Context{
+    let context = Context {
         ifconfig,
         pkg_name: PGK_NAME,
         version: PKG_VERSION,
@@ -86,6 +101,127 @@ fn index_html(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>
         uri: req_info.uri,
     };
     Template::render("index", &context)
+}
+
+#[get("/ip", format = "application/json", rank = 1)]
+#[allow(unknown_lints)] // for clippy
+#[allow(needless_pass_by_value)] // params are passed by value
+fn ip_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
+
+    // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
+    match serde_json::to_value(ifconfig.ip) {
+        Ok(json) => Some(Json(json)),
+        Err(_) => None
+    }
+}
+
+#[get("/tcp", format = "application/json", rank = 1)]
+#[allow(unknown_lints)] // for clippy
+#[allow(needless_pass_by_value)] // params are passed by value
+fn tcp_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
+
+    // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
+    match serde_json::to_value(ifconfig.tcp) {
+        Ok(json) => Some(Json(json)),
+        Err(_) => None
+    }
+}
+
+
+#[get("/host", format = "application/json", rank = 1)]
+#[allow(unknown_lints)] // for clippy
+#[allow(needless_pass_by_value)] // params are passed by value
+fn host_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
+
+    // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
+    match serde_json::to_value(ifconfig.host) {
+        Ok(json) => Some(Json(json)),
+        Err(_) => None
+    }
+}
+
+#[get("/location", format = "application/json", rank = 1)]
+#[allow(unknown_lints)] // for clippy
+#[allow(needless_pass_by_value)] // params are passed by value
+fn location_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
+
+    // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
+    match serde_json::to_value(ifconfig.location) {
+        Ok(json) => Some(Json(json)),
+        Err(_) => None
+    }
+}
+
+#[get("/isp", format = "application/json", rank = 1)]
+#[allow(unknown_lints)] // for clippy
+#[allow(needless_pass_by_value)] // params are passed by value
+fn isp_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
+
+    // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
+    match serde_json::to_value(ifconfig.isp) {
+        Ok(json) => Some(Json(json)),
+        Err(_) => None
+    }
+}
+
+#[get("/user_agent", format = "application/json", rank = 1)]
+#[allow(unknown_lints)] // for clippy
+#[allow(needless_pass_by_value)] // params are passed by value
+fn user_agent_json(req_info: RequesterInfo, user_agent_parser: State<UserAgentParser>, geoip_city_db: State<GeoIpCityDb>, geoip_asn_db: State<GeoIpAsnDb>) -> Option<Json<JsonValue>> {
+    let ifconfig_param = IfconfigParam {
+        remote: &req_info.remote,
+        user_agent_header: &req_info.user_agent,
+        user_agent_parser: &user_agent_parser,
+        geoip_city_db: &geoip_city_db,
+        geoip_asn_db: &geoip_asn_db
+    };
+    let ifconfig = get_ifconfig(&ifconfig_param);
+
+    // 'Json(ifconfig)' requires a lifetime in the return value, which we cannot supply. Therefore, we serialize manually
+    match serde_json::to_value(ifconfig.user_agent) {
+        Ok(json) => Some(Json(json)),
+        Err(_) => None
+    }
 }
 
 #[error(404)]
@@ -118,18 +254,20 @@ impl Fairing for HerokuForwardedFor {
     }
 
     fn on_response(&self, _: &Request, _: &mut Response) {
-        return
+        return;
     }
 }
 
 fn init_user_agent_parser() -> UserAgentParser { UserAgentParser::new() }
+
 fn init_geoip_city_db(db: &str) -> GeoIpCityDb { GeoIpCityDb::new(db).expect("Failed to load GeoIP City DB") }
+
 fn init_geoip_asn_db(db: &str) -> GeoIpAsnDb { GeoIpAsnDb::new(db).expect("Failed to load GeoIP ASN DB") }
 
 fn main() {
     let mut rocket = rocket::ignite()
         .catch(errors![not_found])
-        .mount("/", routes![index_html, index_json])
+        .mount("/", routes![index_html, index_json, ip_json, tcp_json, host_json, location_json, isp_json, user_agent_json])
         .attach(Template::fairing())
         .manage(init_user_agent_parser());
 
@@ -143,10 +281,10 @@ fn main() {
         _ => rocket,
     };
 
-     rocket = match rocket.config().get_str("geoip_asn_db").map(|s| s.to_string()) {
+    rocket = match rocket.config().get_str("geoip_asn_db").map(|s| s.to_string()) {
         Ok(db) => rocket.manage(init_geoip_asn_db(&db)),
         _ => rocket,
     };
 
-     rocket.launch();
+    rocket.launch();
 }
