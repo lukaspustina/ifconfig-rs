@@ -65,13 +65,14 @@
                     <span class="mono">{{ host.name }}</span>
                 </div>
                 <div>
-                    <h4>Location</h4>
-                    <span class="mono uk-text-break">{{#if location.city }}{{ location.city }}{{else}}-{{/if}}, {{#if location.country}}{{ location.country }}{{else}}-{{/if}}</span>
-                    {{#if location.latitude }}
-                        {{# if location.longitude }}
-                            <a href="https://www.google.com/maps/place/{{ location.city }},+{{ location.country }}/@{{ location.latitude }},{{ location.longitude }},12z" uk-icon="icon:world" title="Open Google Maps on this location." uk-tooltip></a>
+                    <h4>Location
+                        {{#if location.latitude }}
+                            {{# if location.longitude }}
+                                <a href="https://www.google.com/maps/place/{{ location.city }},+{{ location.country }}/@{{ location.latitude }},{{ location.longitude }},12z" uk-icon="icon:world; ratio: 0.75" title="Open Google Maps on this location." uk-tooltip></a>
+                            {{/if}}
                         {{/if}}
-                    {{/if}}
+                    </h4>
+                    <span class="mono uk-text-break">{{#if location.city }}{{ location.city }}{{else}}-{{/if}}, {{#if location.country}}{{ location.country }}{{else}}-{{/if}}</span>
                     <br>
                     <span class="mono uk-text-break">{{#if isp.name }}{{ isp.name }}{{else}}-{{/if}}</span>
                 </div>
