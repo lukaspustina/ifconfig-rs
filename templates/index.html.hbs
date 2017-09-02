@@ -5,6 +5,7 @@
         <meta name="description" content="Yet another ifconfig / what's my IP service">
         <meta name="keywords" content="what's my ip,ifconfig,ip address,json">
         <meta name="author" content="Lukas Pustina">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>ifconfig.rs</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.30/css/uikit.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -55,58 +56,50 @@
         </style>
     </head>
     <body>
-        <a href="https://github.com/lukaspustina/ifconfig-rs" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
         <div class="uk-container">
             <h1 class="uk-heading-primary uk-heading-line"><span>{{ pkg_name }}</span></h1>
             {{#with ifconfig}}
-            <div class="uk-grid-match uk-grid-small" uk-grid>
-                    <div class="uk-width-1-1@m">
-                        <div>
-                            <h1 class="mono">{{ ip.addr }}</h1>
-                            <span class="mono">{{ host.name }}</span>
-                        </div>
-                    </div>
-                     <div class="uk-width-expand@m">
-                        <div>
-                            <h4>Location</h4>
-                            <span class="mono">{{#if location.city }}{{ location.city }}{{else}}-{{/if}}, {{#if location.country}}{{ location.country }}{{else}}-{{/if}}</span>
-                            {{#if location.latitude }}
-                                {{# if location.longitude }}
-                                    <a href="https://www.google.com/maps/place/{{ location.city }},+{{ location.country }}/@{{ location.latitude }},{{ location.longitude }},12z" uk-icon="icon:world" title="Open Google Maps on this location." uk-tooltip></a>
-                                {{/if}}
-                            {{/if}}
-                            <br>
-                            <span class="mono">{{#if isp.name }}{{ isp.name }}{{else}}-{{/if}}</span>
-                        </div>
-                    </div>
-                    <div class="uk-width-expand@m">
-                        <span>
-                            <h4>User Agent</h4>
-                            <span class="mono">{{ user_agent.name }}, {{ user_agent.version }}</span>
-                    </div>
-                    <div class="uk-width-expand@m">
-                        <div>
-                            <h4>Operating System</h4>
-                            <span class="mono">{{ user_agent.os }}, {{ user_agent.os_version }}</span>
-                        </div>
-                    </div>
-            {{/with}}
-                <div class="uk-width-1-1@m">
-                    <div>
-                        <ul uk-accordion="multiple: true">
+            <div class="uk-child-width-expand@s uk-grid-match" uk-grid>
+                <div class="uk-width-1-1@s">
+                    <span class="mono uk-text-break" style="font-size: 38px; color: black">{{ ip.addr }}</span>
+                    <span class="mono">{{ host.name }}</span>
+                </div>
+                <div>
+                    <h4>Location</h4>
+                    <span class="mono uk-text-break">{{#if location.city }}{{ location.city }}{{else}}-{{/if}}, {{#if location.country}}{{ location.country }}{{else}}-{{/if}}</span>
+                    {{#if location.latitude }}
+                        {{# if location.longitude }}
+                            <a href="https://www.google.com/maps/place/{{ location.city }},+{{ location.country }}/@{{ location.latitude }},{{ location.longitude }},12z" uk-icon="icon:world" title="Open Google Maps on this location." uk-tooltip></a>
+                        {{/if}}
+                    {{/if}}
+                    <br>
+                    <span class="mono uk-text-break">{{#if isp.name }}{{ isp.name }}{{else}}-{{/if}}</span>
+                </div>
+                <div>
+                    <h4>User Agent</h4>
+                    <span class="mono uk-text-break">{{ user_agent.name }}, {{ user_agent.version }}</span>
+                </div>
+                <div>
+                    <h4>Operating System</h4>
+                    <span class="mono uk-text-break">{{ user_agent.os }}, {{ user_agent.os_version }}</span>
+                </div>
+        {{/with}}
+                <div class="uk-width-1-1@s">
+                <div>
+                    <ul uk-accordion="multiple: true">
                         <li>
                             <h3 class="uk-accordion-title"><span class="uk-label">API</span></h3>
                             <div class="uk-accordion-content">
                                 <div class="uk-grid-match uk-grid-small" uk-grid>
-                                    <div class="uk-width-1-1@m">
+                                    <div class="uk-width-1-1@s">
                                         <div>
                                             <p>Every resource supports plain as well as JSON GET requests. JSON responses can be
-                                            requested by setting the corresponding <span class="mono">Accept</span> header,
-                                            i.e., <span class="mono">Accept: application/json</span>. <em>{{ pkg_name }}</em>
-                                            tries to identify whether a request is sent by CLI client and then only sends the
-                                            resource's base information. In this way for example, a simple <span class="mono">
+                                                requested by setting the corresponding <span class="mono">Accept</span> header,
+                                                i.e., <span class="mono">Accept: application/json</span>. <em>{{ pkg_name }}</em>
+                                                tries to identify whether a request is sent by CLI client and then only sends the
+                                                resource's base information. In this way for example, a simple <span class="mono">
                                             curl {{ base_url }}{{ uri }}</span> retrieves your IP address. For any other browser
-                                            <em>{{ pkg_name }}</em> returns this beautiful HTML page you're currently looking at.
+                                                <em>{{ pkg_name }}</em> returns this beautiful HTML page you're currently looking at.
                                             </p>
                                             <ul uk-tab>
                                                 <li class="uk-active"><a href="#"><span class="mono">/</span></a></li>
@@ -288,7 +281,7 @@
                                                 <dt>curl</dt>
                                                 <dd>
 <pre class="mono-pre">> curl {{ base_url }}{{ uri }}
-{{ ifconfig.ip.addr }}</pre>
+    {{ ifconfig.ip.addr }}</pre>
                                                 </dd>
                                             </dl>
                                         </div>
@@ -299,7 +292,7 @@
                                                 <dt>wget</dt>
                                                 <dd>
 <pre class="mono-pre">> wget -qO - {{ base_url }}{{ uri }}
-{{ ifconfig.ip.addr }}</pre>
+    {{ ifconfig.ip.addr }}</pre>
                                                 </dd>
                                             </dl>
                                         </div>
@@ -310,9 +303,9 @@
                                                 <dt>httpie</dt>
                                                 <dd>
 <pre class="mono-pre">> http -b {{ base_url }}{{ uri }}
-{{ ifconfig.ip.addr }}</pre>
-                                            </dd>
-                                        </dl>
+    {{ ifconfig.ip.addr }}</pre>
+                                                </dd>
+                                            </dl>
                                         </div>
                                     </div>
                                     <div class="uk-width-1-2@s">
@@ -321,7 +314,7 @@
                                                 <dt>fetch</dt>
                                                 <dd>
 <pre class="mono-pre">> fetch -qo- {{ base_url }}{{ uri }}
-{{ ifconfig.ip.addr }}</pre>
+    {{ ifconfig.ip.addr }}</pre>
                                                 </dd>
                                             </dl>
                                         </div>
@@ -334,7 +327,7 @@
                                                     <script>
                                                         $(document).ready(get_ifconfig_json("/", "#cli-curl-json-slash"));
                                                     </script>
-<pre class="mono-pre" id="cli-curl-json-slash">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}
+                                                    <pre class="mono-pre" id="cli-curl-json-slash">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}
 </pre>
                                                 </dd>
                                             </dl>
@@ -347,7 +340,7 @@
                             <h3 class="uk-accordion-title"><span class="uk-label">FAQ</span></h3>
                             <div class="uk-accordion-content">
                                 <div class="uk-grid-match uk-grid-small" uk-grid>
-                                   <div class="uk-width-1-1@s">
+                                    <div class="uk-width-1-1@s">
                                         <div>
                                             <dl class="uk-description-list">
                                                 <dt>Where is <em>{{ pkg_name }}</em> hosted?</dt>
@@ -390,8 +383,9 @@
                             </div>
                         </li>
                     </ul>
-                    </div>
-                <div class="uk-width-1-1@m">
+                </div>
+            </div>
+                <div class="uk-width-1-1@s">
                     <div class="uk-text-small">
                         <em>{{ pkg_name }}</em> is yet another
                         <a class="uk-link-text" href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a>
@@ -403,7 +397,7 @@
                     </div>
                 </div>
             </div>
-            </div>
         </div>
+        <a href="https://github.com/lukaspustina/ifconfig-rs" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
     </body>
 </html>
