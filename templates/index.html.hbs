@@ -303,7 +303,7 @@
                                     <div class="uk-width-1-2@s">
                                         <div>
                                             <dl class="uk-description-list">
-                                                <dt>httpie</dt><script>$(document).ready(get_ifconfig_plain("/tcp", "#cli-curl-host"));</script>
+                                                <dt>httpie</dt><script>$(document).ready(get_ifconfig_plain("/host", "#cli-curl-host"));</script>
                                                 <dd>
                                                     <pre id="cli-curl-host" class="mono">> http -b {{ base_url }}{{ uri }}host
 </pre>
@@ -312,11 +312,14 @@
                                         </div>
                                     </div>
                                     <div class="uk-width-1-2@s">
+                                        <!-- deliberately empty -->
+                                    </div>
+                                    <div class="uk-width-1-2@s">
                                         <div>
                                             <dl class="uk-description-list">
-                                                <dt>fetch</dt><script>$(document).ready(get_ifconfig_plain("/location", "#cli-curl-location"));</script>
+                                                <dt>curl for Json</dt><script>$(document).ready(get_ifconfig_json("/ip", "#cli-curl-json-ip"));</script>
                                                 <dd>
-                                                    <pre id="cli-curl-location" class="mono">> fetch -qo- {{ base_url }}{{ uri }}location
+                                                    <pre class="mono" id="cli-curl-json-ip">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}ip
 </pre>
                                                 </dd>
                                             </dl>
@@ -325,9 +328,20 @@
                                     <div class="uk-width-1-2@s">
                                         <div>
                                             <dl class="uk-description-list">
-                                                <dt>curl for Json</dt><script>$(document).ready(get_ifconfig_json("/", "#cli-curl-json-slash"));</script>
+                                                <dt>wget for Json</dt><script>$(document).ready(get_ifconfig_json("/tcp", "#cli-curl-json-tcp"));</script>
                                                 <dd>
-                                                    <pre class="mono" id="cli-curl-json-slash">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}
+                                                    <pre class="mono" id="cli-curl-json-tcp">> wget -qO- --header=Accept:application/json {{ base_url }}{{ uri }}tcp
+</pre>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="uk-width-1-2@s">
+                                        <div>
+                                            <dl class="uk-description-list">
+                                                <dt>httpie for Json</dt><script>$(document).ready(get_ifconfig_json("/host", "#cli-curl-json-host"));</script>
+                                                <dd>
+                                                    <pre class="mono" id="cli-curl-json-host">> http -bj {{ base_url }}{{ uri }}host
 </pre>
                                                 </dd>
                                             </dl>
