@@ -13,7 +13,6 @@ use ifconfig_rs::guards::*;
 use ifconfig_rs::handlers;
 use rocket_contrib::{Json, Value as JsonValue};
 use rocket::{Request, State};
-use rocket::response::Redirect;
 use rocket_contrib::Template;
 
 #[get("/", rank = 1)]
