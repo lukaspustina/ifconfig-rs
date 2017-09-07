@@ -1,16 +1,13 @@
 #![allow(unknown_lints)] // for clippy
 #![allow(needless_pass_by_value)] // params are passed by value
 
+use super::ProjectInfo;
 use backend::*;
 use guards::*;
 use rocket::State;
 use rocket_contrib::{Json, Value as JsonValue};
 use rocket_contrib::Template;
 use serde_json;
-
-static PGK_NAME: &'static str = "ifconfig.rs";
-static PKG_VERSION: &'static str = env!("CARGO_PKG_VERSION");
-static BASE_URL: &'static str = "http://ifconfig.rs";
 
 pub fn index_json(
     req_info: RequesterInfo,
@@ -35,6 +32,7 @@ pub fn index_json(
 }
 
 pub fn index_html(
+    project_info: State<ProjectInfo>,
     req_info: RequesterInfo,
     user_agent_parser: State<UserAgentParser>,
     geoip_city_db: State<GeoIpCityDb>,
@@ -52,17 +50,13 @@ pub fn index_html(
     #[derive(Serialize)]
     struct Context<'a> {
         ifconfig: Ifconfig<'a>,
-        pkg_name: &'a str,
-        version: &'a str,
-        base_url: &'a str,
+        project: &'a ProjectInfo,
         uri: &'a str,
     }
 
     let context = Context {
         ifconfig,
-        pkg_name: PGK_NAME,
-        version: PKG_VERSION,
-        base_url: BASE_URL,
+        project: &project_info,
         uri: req_info.uri,
     };
     Template::render("index", &context)

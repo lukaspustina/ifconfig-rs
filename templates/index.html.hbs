@@ -57,7 +57,7 @@
     </head>
     <body>
         <div class="uk-container">
-            <h1 class="uk-heading-primary uk-heading-line"><span>{{ pkg_name }}</span></h1>
+            <h1 class="uk-heading-primary uk-heading-line"><span>{{ project.name }}</span></h1>
             {{#with ifconfig}}
             <div class="uk-child-width-expand@s uk-grid-match" uk-grid>
                 <div class="uk-width-1-1@s">
@@ -99,10 +99,10 @@
                                             <p>
                                             Every resource supports plain as well as JSON GET requests. JSON responses can be
                                             requested by setting the corresponding <span class="mono">Accept</span> header,
-                                            i.e., <span class="mono">Accept: application/json</span>. <em>{{ pkg_name }}</em>
+                                            i.e., <span class="mono">Accept: application/json</span>. <em>{{ project.name }}</em>
                                             tries to identify whether a request is sent by CLI client and then only returns the
                                             plain response unless JSON is explicitly requested. In this way for example,
-                                            a simple <span class="mono"> curl {{ base_url }}{{ uri }}</span> retrieves
+                                            a simple <span class="mono"> curl {{ project.base_url }}{{ uri }}</span> retrieves
                                             your IP address. You can also add <span class="mono">"/json"</span> to any
                                             resource to force a JSON response regardless of the Accept header.
                                             </p>
@@ -285,7 +285,7 @@
                                             <dl class="uk-description-list">
                                                 <dt>curl</dt><script>$(document).ready(get_ifconfig_plain("/", "#cli-curl-root"));</script>
                                                 <dd>
-                                                    <pre id="cli-curl-root" class="mono">> curl {{ base_url }}{{ uri }}
+                                                    <pre id="cli-curl-root" class="mono">> curl {{ project.base_url }}{{ uri }}
 </pre>
                                                 </dd>
                                             </dl>
@@ -296,7 +296,7 @@
                                             <dl class="uk-description-list">
                                                 <dt>wget</dt><script>$(document).ready(get_ifconfig_plain("/tcp", "#cli-curl-tcp"));</script>
                                                 <dd>
-                                                    <pre id="cli-curl-tcp" class="mono">> wget -qO - {{ base_url }}{{ uri }}tcp
+                                                    <pre id="cli-curl-tcp" class="mono">> wget -qO - {{ project.base_url }}{{ uri }}tcp
 </pre>
                                                 </dd>
                                             </dl>
@@ -307,7 +307,7 @@
                                             <dl class="uk-description-list">
                                                 <dt>httpie</dt><script>$(document).ready(get_ifconfig_plain("/host", "#cli-curl-host"));</script>
                                                 <dd>
-                                                    <pre id="cli-curl-host" class="mono">> http -b {{ base_url }}{{ uri }}host
+                                                    <pre id="cli-curl-host" class="mono">> http -b {{ project.base_url }}{{ uri }}host
 </pre>
                                                 </dd>
                                             </dl>
@@ -321,7 +321,7 @@
                                             <dl class="uk-description-list">
                                                 <dt>curl for Json</dt><script>$(document).ready(get_ifconfig_json("/ip", "#cli-curl-json-ip"));</script>
                                                 <dd>
-                                                    <pre class="mono" id="cli-curl-json-ip">> curl -H "Accept: application/json" {{ base_url }}{{ uri }}ip
+                                                    <pre class="mono" id="cli-curl-json-ip">> curl -H "Accept: application/json" {{ project.base_url }}{{ uri }}ip
 </pre>
                                                 </dd>
                                             </dl>
@@ -332,7 +332,7 @@
                                             <dl class="uk-description-list">
                                                 <dt>wget for Json</dt><script>$(document).ready(get_ifconfig_json("/tcp", "#cli-curl-json-tcp"));</script>
                                                 <dd>
-                                                    <pre class="mono" id="cli-curl-json-tcp">> wget -qO- --header=Accept:application/json {{ base_url }}{{ uri }}tcp
+                                                    <pre class="mono" id="cli-curl-json-tcp">> wget -qO- --header=Accept:application/json {{ project.base_url }}{{ uri }}tcp
 </pre>
                                                 </dd>
                                             </dl>
@@ -343,7 +343,7 @@
                                             <dl class="uk-description-list">
                                                 <dt>httpie for Json</dt><script>$(document).ready(get_ifconfig_json("/host", "#cli-curl-json-host"));</script>
                                                 <dd>
-                                                    <pre class="mono" id="cli-curl-json-host">> http -bj {{ base_url }}{{ uri }}host
+                                                    <pre class="mono" id="cli-curl-json-host">> http -bj {{ project.base_url }}{{ uri }}host
 </pre>
                                                 </dd>
                                             </dl>
@@ -359,7 +359,7 @@
                                     <div class="uk-width-1-1@s">
                                         <div>
                                             <dl class="uk-description-list">
-                                                <dt>Where is <em>{{ pkg_name }}</em> hosted?</dt>
+                                                <dt>Where is <em>{{ project.name }}</em> hosted?</dt>
                                                 <dd>
                                                     The code runs on a free <a href="https://heroku.com">Heroku</a> Autoscaling
                                                     Dnyo that powers down when there are no service accesses for a period of
@@ -368,25 +368,25 @@
                                                 </dd>
                                             </dl>
                                             <dl class="uk-description-list">
-                                                <dt>Does <em>{{ pkg_name }}</em> support IPv6?</dt>
+                                                <dt>Does <em>{{ project.name }}</em> support IPv6?</dt>
                                                 <dd>
                                                     Currently, no. Even though the code is agnostic regarding the IP version,
                                                     <a href="https://heroku.com">Heroku</a> currently does not support IPv6, so
-                                                    <em>{{ pkg_name }}</em> is only available for IPv4. You can run your own
-                                                    instance of <em>{{ pkg_name }}</em> at another, IPv6 supporting provider.
+                                                    <em>{{ project.name }}</em> is only available for IPv4. You can run your own
+                                                    instance of <em>{{ project.name }}</em> at another, IPv6 supporting provider.
                                                     Please see the project's
                                                     <a href="https://github.com/lukaspustina/ifconfig-rs">Readme</a> in the
                                                     GitHub repository for details.
                                                 </dd>
                                             </dl>
                                             <dl class="uk-description-list">
-                                                <dt>Can I run my own instance of <em>{{ pkg_name }}</em>?</dt>
+                                                <dt>Can I run my own instance of <em>{{ project.name }}</em>?</dt>
                                                 <dd>
                                                     Yes please, you're welcome to. Just clone or fork the
                                                     <a href="https://github.com/lukaspustina/ifconfig-rs">GitHub repository</a>.
                                                     If you find it useful for your purpose, I would highly appreciate you
                                                     sending me a postcard from your hometown mentioning how you use <em>
-                                                    {{ pkg_name }}</em>. Please see the project's
+                                                    {{ project.name }}</em>. Please see the project's
                                                     <a href="https://github.com/lukaspustina/ifconfig-rs">Readme</a> in the
                                                     GitHub repository for details.
                                                 </dd>
@@ -408,9 +408,11 @@
             </div>
             <div class="uk-width-1-1@s uk-margin-small-bottom">
                 <div class="uk-text-small">
-                    <em>{{ pkg_name }}</em> is yet another
+                    <em>{{ project.name }}</em> is yet another
                     <a href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a>
-                    service, currently running version {{ version }}. It is written in
+                    service, currently running
+                    <a href="https://github.com/lukaspustina/ifconfig-rs">ifconfig-rs</a>
+                    version {{ project.version }}. It is written in
                     <a href="https://www.rust-lang.org/">
                     Rust</a> (hence the .rs top-level domain) using the
                     <a href="https://rocket.rs">Rocket</a> web framework and includes GeoLite2 data

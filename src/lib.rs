@@ -26,6 +26,16 @@ use routes::*;
 use rocket::Rocket;
 use rocket_contrib::Template;
 
+static PROJECT_NAME: &'static str = env!("CARGO_PKG_NAME");
+static PROJECT_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
+#[derive(Serialize)]
+pub struct ProjectInfo {
+    name: String,
+    version: String,
+    base_url: String,
+}
+
 pub fn rocket() -> Rocket {
     let mut rocket = rocket::ignite()
         .catch(errors![not_found])
@@ -70,6 +80,14 @@ pub fn rocket() -> Rocket {
         Ok("heroku") => rocket.attach(HerokuForwardedFor::default()),
         _ => rocket,
     };
+
+
+    let project_info = ProjectInfo {
+        name: rocket.config().get_str("project_name").unwrap_or(PROJECT_NAME ).to_string(),
+        version: PROJECT_VERSION.to_string(),
+        base_url: rocket.config().get_str("project_base_url").expect("config setting base URL").to_string(),
+    };
+    rocket = rocket.manage(project_info);
 
     rocket = match rocket
         .config()

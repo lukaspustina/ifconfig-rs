@@ -1,6 +1,7 @@
 #![allow(unknown_lints)] // for clippy
 #![allow(needless_pass_by_value)] // params are passed by value
 
+use super::ProjectInfo;
 use backend::*;
 use guards::*;
 use handlers;
@@ -41,12 +42,13 @@ fn index_plain(
 
 #[get("/", rank = 3)]
 fn index_html(
+    project_info: State<ProjectInfo>,
     req_info: RequesterInfo,
     user_agent_parser: State<UserAgentParser>,
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Template {
-    handlers::index_html(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::index_html(project_info, req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/json")]
