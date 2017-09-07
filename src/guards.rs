@@ -19,7 +19,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
         let remote = if let Some(remote) = req.remote() {
             remote
         } else {
-            return Outcome::Failure((Status::BadRequest, ()));
+            return Outcome::Failure((Status::InternalServerError, ()));
         };
         let user_agent = req.headers().get_one("User-Agent");
 
