@@ -17,7 +17,7 @@ fn index_plain_cli(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::index_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::root::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/", format = "application/json", rank = 2)]
@@ -27,7 +27,7 @@ fn index_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::index_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::root::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/", format = "text/plain" , rank = 2)]
@@ -37,7 +37,7 @@ fn index_plain(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::index_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::root::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/", rank = 3)]
@@ -58,7 +58,7 @@ fn index_json_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::index_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::root::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/ip", rank = 1)]
@@ -69,7 +69,7 @@ fn ip_plain_cli(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::ip_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::ip::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/ip", format = "application/json", rank = 2)]
@@ -79,7 +79,7 @@ fn ip_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::ip_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::ip::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/ip", rank = 3)]
@@ -89,7 +89,7 @@ fn ip_plain(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::ip_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::ip::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/ip/json")]
@@ -99,7 +99,7 @@ fn ip_json_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::ip_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::ip::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/tcp", rank = 1)]
@@ -110,7 +110,7 @@ fn tcp_plain_cli(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::tcp_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::tcp::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/tcp", format = "application/json", rank = 2)]
@@ -120,7 +120,7 @@ fn tcp_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::tcp_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::tcp::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/tcp", rank = 3)]
@@ -130,7 +130,7 @@ fn tcp_plain(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::tcp_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::tcp::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/tcp/json")]
@@ -140,7 +140,7 @@ fn tcp_json_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::tcp_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::tcp::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/host", rank = 1)]
@@ -151,7 +151,7 @@ fn host_plain_cli(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::host_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::host::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/host", format = "application/json", rank = 2)]
@@ -161,7 +161,7 @@ fn host_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::host_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::host::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/host", rank = 3)]
@@ -171,7 +171,7 @@ fn host_plain(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::host_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::host::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/host/json")]
@@ -181,7 +181,7 @@ fn host_json_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::host_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::host::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/location", rank = 1)]
@@ -192,7 +192,7 @@ fn location_plain_cli(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::location_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::location::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/location", format = "application/json", rank = 2)]
@@ -202,7 +202,7 @@ fn location_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::location_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::location::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/location", rank = 3)]
@@ -212,7 +212,7 @@ fn location_plain(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::location_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::location::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/location/json")]
@@ -222,7 +222,7 @@ fn location_json_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::location_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::location::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/isp", rank = 1)]
@@ -233,7 +233,7 @@ fn isp_plain_cli(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::isp_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::isp::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/isp", format = "application/json", rank = 2)]
@@ -243,7 +243,7 @@ fn isp_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::isp_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::isp::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/isp", rank = 3)]
@@ -253,7 +253,7 @@ fn isp_plain(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::isp_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::isp::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/isp/json")]
@@ -263,7 +263,7 @@ fn isp_json_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::isp_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::isp::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/user_agent", rank = 1)]
@@ -274,7 +274,7 @@ fn user_agent_plain_cli(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::user_agent_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::user_agent::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/user_agent", format = "application/json", rank = 2)]
@@ -284,7 +284,7 @@ fn user_agent_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::user_agent_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::user_agent::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 
@@ -295,7 +295,7 @@ fn user_agent_plain(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<String> {
-    handlers::user_agent_plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::user_agent::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[get("/user_agent/json")]
@@ -305,7 +305,7 @@ fn user_agent_json_json(
     geoip_city_db: State<GeoIpCityDb>,
     geoip_asn_db: State<GeoIpAsnDb>,
 ) -> Option<Json<JsonValue>> {
-    handlers::user_agent_json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+    handlers::user_agent::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
 #[error(404)]
