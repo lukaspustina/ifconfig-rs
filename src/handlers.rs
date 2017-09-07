@@ -7,7 +7,7 @@ use guards::*;
 use rocket::State;
 use rocket_contrib::Template;
 
-pub fn index_html(
+pub fn root_html(
     project_info: State<ProjectInfo>,
     req_info: RequesterInfo,
     user_agent_parser: State<UserAgentParser>,
