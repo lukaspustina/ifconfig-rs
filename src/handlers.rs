@@ -83,7 +83,7 @@ pub fn index_plain(
     };
     let ifconfig = get_ifconfig(&ifconfig_param);
 
-    Some(ifconfig.ip.addr)
+    Some(format!("{}\n", ifconfig.ip.addr))
 }
 
 
@@ -124,7 +124,7 @@ pub fn ip_plain(
     };
     let ifconfig = get_ifconfig(&ifconfig_param);
 
-    Some(ifconfig.ip.addr)
+    Some(format!("{}\n", ifconfig.ip.addr))
 }
 
 pub fn tcp_json(
@@ -164,7 +164,7 @@ pub fn tcp_plain(
     };
     let ifconfig = get_ifconfig(&ifconfig_param);
 
-    Some(format!("{}", ifconfig.tcp.port))
+    Some(format!("{}\n", ifconfig.tcp.port))
 }
 
 pub fn host_json(
@@ -204,7 +204,7 @@ pub fn host_plain(
     };
     let ifconfig = get_ifconfig(&ifconfig_param);
 
-    Some(ifconfig.host.name)
+    Some(format!("{}\n", ifconfig.host.name))
 }
 
 pub fn location_json(
@@ -246,7 +246,7 @@ pub fn location_plain(
 
     ifconfig.location
         .map(|l| format!(
-            "{}, {}",
+            "{}, {}\n",
             l.city.unwrap_or_else(|| "unknown".to_string()),
             l.country.unwrap_or_else(|| "unknown".to_string())
         )).or_else(|| Some("unknown".to_string()))
