@@ -18,7 +18,7 @@ fn handle_root_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("192.168.0.101".into()));
+    assert_eq!(response.body_string(), Some("192.168.0.101\n".into()));
 }
 
 #[test]
@@ -32,7 +32,7 @@ fn handle_root_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("192.168.0.101".into()));
+    assert_eq!(response.body_string(), Some("192.168.0.101\n".into()));
 }
 
 #[test]
@@ -92,7 +92,7 @@ fn handle_ip_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("192.168.0.101".into()));
+    assert_eq!(response.body_string(), Some("192.168.0.101\n".into()));
 }
 
 #[test]
@@ -106,7 +106,7 @@ fn handle_ip_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("192.168.0.101".into()));
+    assert_eq!(response.body_string(), Some("192.168.0.101\n".into()));
 }
 
 #[test]
@@ -152,7 +152,7 @@ fn handle_tcp_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("8000".into()));
+    assert_eq!(response.body_string(), Some("8000\n".into()));
 }
 
 #[test]
@@ -166,7 +166,7 @@ fn handle_tcp_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("8000".into()));
+    assert_eq!(response.body_string(), Some("8000\n".into()));
 }
 
 #[test]
@@ -212,7 +212,7 @@ fn handle_host_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com".into()));
+    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
 }
 
 #[test]
@@ -226,7 +226,7 @@ fn handle_host_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com".into()));
+    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
 }
 
 #[test]
@@ -332,7 +332,7 @@ fn handle_location_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("Norwell, United States".into()));
+    assert_eq!(response.body_string(), Some("Norwell, United States\n".into()));
 }
 
 #[test]
@@ -346,7 +346,7 @@ fn handle_location_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("Norwell, United States".into()));
+    assert_eq!(response.body_string(), Some("Norwell, United States\n".into()));
 }
 
 #[test]
