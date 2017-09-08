@@ -34,7 +34,7 @@ deploy:
   strategy: git
   app:
     heroku-prod: ifconfig-rs
-    heroku-staging: ifconfig-rs-heroku
+    heroku-staging: ifconfig-rs-staging
   on:
     condition:
     - "$DEPLOY"
