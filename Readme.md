@@ -1,5 +1,7 @@
 # ifconfig-rs
 
+[![Production deployed](https://img.shields.io/badge/myip.rs-prod-brightgreen.svg)](http://myip.rs) [![Build Status](https://travis-ci.org/lukaspustina/ifconfig-rs.svg?branch=master)](https://travis-ci.org/lukaspustina/ifconfig-rs) [![GitHub release](https://img.shields.io/github/release/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/releases) [![license](https://img.shields.io/github/license/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/blob/master/LICENSE)
+
 _ifconfig-rs_ is yet another <a href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a> service currently powering [myip.rs](http://myip.rs). It is written in <a href="https://www.rust-lang.org/"> Rust</a> (hence the "-rs" suffix) using the <a href="https://rocket.rs">Rocket</a> web framework and includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>. The UI is made with <a href="https://getuikit.com">uikit</a>. It is MIT licensed so please feel free to clone and to fork it.
 
 _ifconfig_rs_ offers an API to query information like the origin's IP address, TCP port, host name, geoip based location, ISP, as well as user agent. See [myip.rs](http://myip.rs) for API and special CLI tool support.
