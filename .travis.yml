@@ -3,12 +3,11 @@ language: rust
 services: docker
 sudo: required
 env:
-  global:
+  global: 
 matrix:
   include:
   - env: TARGET=x86_64-unknown-linux-gnu DEPLOY=1
     rust: nightly
-  # Raspi: Just for testing purpose
   - env: TARGET=armv7-unknown-linux-gnueabihf
     rust: nightly
     allow_fail: true
@@ -31,7 +30,7 @@ after_script: set +e
 deploy:
   provider: heroku
   api_key:
-    secure: ab1/Iq9A5zGhoF9kvHSnkDcKXf2GYOqv4rC9L/UKtlizchsfahBgcvS1QzBXy1mKTjXSjYEFWd2+++SFGiKhm3KYhTgSUOXdGMmbU2lN+/rz3DBIV1T/cXEwRxx7rwKdaFQplHc5K1TIElQxnywON1/En7BrQTyzrnn3ayvdu6esuf5UfzvS0L2K/29Tx6lwlg/vF1P6dHiUKn86Lv6IbtiOmkjqrbPsd3pr920DtSZb5wabKHz7ZjOINm5Q7zRkBL/vRo8YVgZTjATB8021JsGpJ0Hde2rF2hz1DLG1leEImB5lCLC4xtUARNx6OF+4BdjHHsmc5eUnN0N7NHCEeUTlwTGsowBKXFcS3ZdXC6X35ojL9xQfxQAeNTmLARdZXKPtlxBWauOB9RMhtfaa57mErfKzgdnWyf57EuoYKW1zPsd+Rp5aCNa7ZTXAs284RmCwUAvjCffelsCDdCIpMk0ms44453s0Hnu9A2pojzWuwXiNp62KjiL9NAKUwFKUXCMXbkGwR4rAWYe3OrsHTYVnVoMeCOJJOjgmzy6WJiuxYCbDvtpWmb5WSOrF9jKKzzbxBLLv+mgL1SXjnp6jsVPap/YOYumtFK7f+6tEgSkSo1Wvq7iSJqrZkm6bx7CX1pNKy4YXJETh7z83OxL5xci84q7Txbcx02DpyD4EmrI=
+    secure: hDkK7zATxGrBar2l+DNO+yLL2o8FldQB6o/wQh0NQD9s77KMuDKvoBCHRvbTKZLS1m6746ncDfe3vAWzTPjqyxdawONIaWJG39d0GfW2qAtFyfrMWvBBsmpG3xf3HjIuyXTBfIoAPOupmmFclPJ2wOjR40n2jPn46/mKsgxiIx4Y+41rqtL8+Jk1i3h5+hAbI8UoiEmo64A63jESeLA4Q8x7m0rlcvreBDFgYs5Xux0SBqnqCOhWva+jW00ewxe+oC4e1FSWjfRkht4AjGaWkSrFrF4X8tIvVVsylz7vrAjEiCx3b3rhG52EdXBuLrD4eyPk5CYwcpIHbNNf14wnCXcVbyIDadg1+qnJ6/HddG4fGoZqJjN16PcB4Yfp8cqidgVVrLKbPHEF8VcNr22hgh5LlmRSNDKAsXCLNMegtM3dd7cxtmq42F+C+HIxBReUpjHMOujEX9qCVWdKwtLyXNiql+cyKtw+VtAaEmEx2xrcRYcmp/bM4W15PyQpHFG5dphMi7Wssnu70FVH5bsXgTzhhAjXgVRFb0HdlO2nctyn6hgUeH7BDvc2HZDWaPOFBYnOqFPL4Vg8jjAMYEYZAuwKezqxeUyubzEt7TSlddkvUbUKeRO4WS8aLwSRlwVsZJC2ncvS8cRC7e/8ORPflJKTYlvzdU7n9Qv/+xUbkCk=
   strategy: git
   app:
     heroku-prod: ifconfig-rs
@@ -39,4 +38,3 @@ deploy:
   on:
     condition:
     - "$DEPLOY"
-
