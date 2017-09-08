@@ -1,5 +1,8 @@
 all: check unit integration
 
+doctoc:
+	doctoc --maxlevel 2 Readme.md
+
 check:
 	cargo $@
 
@@ -26,8 +29,7 @@ integration:
 ignored:
 	cargo test -- --ignored
 
-
-heroku:
+get_geoip: geoip/GeoIP2-City.mmdb geoip/GeoIP2-ASN.mmdb
 
 geoip/GeoIP2-City.mmdb: geoip
 	curl -s http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz | tar -xzf - -C $<
@@ -42,8 +44,8 @@ geoip/GeoIP2-ASN.mmdb: geoip
 geoip:
 	mkdir $@
 
-clean-geoip: geoip
-	@-rm -R $<
+clean-geoip:
+	@-rm -R geoip
 
 .PHONY: tests
 
