@@ -14,6 +14,6 @@ main() {
 }
 
 # we don't run the "test phase" when doing deploys
-if [ -z $TRAVIS_TAG ]; then
+if [[ $TRAVIS_TAG != *"heroku"* ]]; then
     main
 fi
