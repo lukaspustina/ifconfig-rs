@@ -29,21 +29,14 @@ script:
 - bash .ci/script.sh
 after_script: set +e
 deploy:
-  matrix:
-  - provider: heroku
-    api_key:
-      secure: ab1/Iq9A5zGhoF9kvHSnkDcKXf2GYOqv4rC9L/UKtlizchsfahBgcvS1QzBXy1mKTjXSjYEFWd2+++SFGiKhm3KYhTgSUOXdGMmbU2lN+/rz3DBIV1T/cXEwRxx7rwKdaFQplHc5K1TIElQxnywON1/En7BrQTyzrnn3ayvdu6esuf5UfzvS0L2K/29Tx6lwlg/vF1P6dHiUKn86Lv6IbtiOmkjqrbPsd3pr920DtSZb5wabKHz7ZjOINm5Q7zRkBL/vRo8YVgZTjATB8021JsGpJ0Hde2rF2hz1DLG1leEImB5lCLC4xtUARNx6OF+4BdjHHsmc5eUnN0N7NHCEeUTlwTGsowBKXFcS3ZdXC6X35ojL9xQfxQAeNTmLARdZXKPtlxBWauOB9RMhtfaa57mErfKzgdnWyf57EuoYKW1zPsd+Rp5aCNa7ZTXAs284RmCwUAvjCffelsCDdCIpMk0ms44453s0Hnu9A2pojzWuwXiNp62KjiL9NAKUwFKUXCMXbkGwR4rAWYe3OrsHTYVnVoMeCOJJOjgmzy6WJiuxYCbDvtpWmb5WSOrF9jKKzzbxBLLv+mgL1SXjnp6jsVPap/YOYumtFK7f+6tEgSkSo1Wvq7iSJqrZkm6bx7CX1pNKy4YXJETh7z83OxL5xci84q7Txbcx02DpyD4EmrI=
-    app: ifconfig-rs
-    on:
-      branch: heroku-prod
-      condition:
-      - "$DEPLOY"
-  - provider: heroku
-    api_key:
-      secure: ab1/Iq9A5zGhoF9kvHSnkDcKXf2GYOqv4rC9L/UKtlizchsfahBgcvS1QzBXy1mKTjXSjYEFWd2+++SFGiKhm3KYhTgSUOXdGMmbU2lN+/rz3DBIV1T/cXEwRxx7rwKdaFQplHc5K1TIElQxnywON1/En7BrQTyzrnn3ayvdu6esuf5UfzvS0L2K/29Tx6lwlg/vF1P6dHiUKn86Lv6IbtiOmkjqrbPsd3pr920DtSZb5wabKHz7ZjOINm5Q7zRkBL/vRo8YVgZTjATB8021JsGpJ0Hde2rF2hz1DLG1leEImB5lCLC4xtUARNx6OF+4BdjHHsmc5eUnN0N7NHCEeUTlwTGsowBKXFcS3ZdXC6X35ojL9xQfxQAeNTmLARdZXKPtlxBWauOB9RMhtfaa57mErfKzgdnWyf57EuoYKW1zPsd+Rp5aCNa7ZTXAs284RmCwUAvjCffelsCDdCIpMk0ms44453s0Hnu9A2pojzWuwXiNp62KjiL9NAKUwFKUXCMXbkGwR4rAWYe3OrsHTYVnVoMeCOJJOjgmzy6WJiuxYCbDvtpWmb5WSOrF9jKKzzbxBLLv+mgL1SXjnp6jsVPap/YOYumtFK7f+6tEgSkSo1Wvq7iSJqrZkm6bx7CX1pNKy4YXJETh7z83OxL5xci84q7Txbcx02DpyD4EmrI=
-    app: ifconifg-rs-staging
-    on:
-      branch: heroku-staging
-      condition:
-      - "$DEPLOY"
+  provider: heroku
+  api_key:
+    secure: ab1/Iq9A5zGhoF9kvHSnkDcKXf2GYOqv4rC9L/UKtlizchsfahBgcvS1QzBXy1mKTjXSjYEFWd2+++SFGiKhm3KYhTgSUOXdGMmbU2lN+/rz3DBIV1T/cXEwRxx7rwKdaFQplHc5K1TIElQxnywON1/En7BrQTyzrnn3ayvdu6esuf5UfzvS0L2K/29Tx6lwlg/vF1P6dHiUKn86Lv6IbtiOmkjqrbPsd3pr920DtSZb5wabKHz7ZjOINm5Q7zRkBL/vRo8YVgZTjATB8021JsGpJ0Hde2rF2hz1DLG1leEImB5lCLC4xtUARNx6OF+4BdjHHsmc5eUnN0N7NHCEeUTlwTGsowBKXFcS3ZdXC6X35ojL9xQfxQAeNTmLARdZXKPtlxBWauOB9RMhtfaa57mErfKzgdnWyf57EuoYKW1zPsd+Rp5aCNa7ZTXAs284RmCwUAvjCffelsCDdCIpMk0ms44453s0Hnu9A2pojzWuwXiNp62KjiL9NAKUwFKUXCMXbkGwR4rAWYe3OrsHTYVnVoMeCOJJOjgmzy6WJiuxYCbDvtpWmb5WSOrF9jKKzzbxBLLv+mgL1SXjnp6jsVPap/YOYumtFK7f+6tEgSkSo1Wvq7iSJqrZkm6bx7CX1pNKy4YXJETh7z83OxL5xci84q7Txbcx02DpyD4EmrI=
+  strategy: git
+  app:
+    heroku-prod: ifconfig-rs
+    heroku-staging: ifconfig-rs-heroku
+  on:
+    condition:
+    - "$DEPLOY"
 
