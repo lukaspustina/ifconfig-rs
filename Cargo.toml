@@ -17,7 +17,6 @@ include = [
 
 [badges]
 travis-ci = { repository = "lukaspustina/ifconfig-rs", branch = "master" }
-appveyor = { repository = "lukaspustina/ifconfig-rs", branch = "master" }
 
 [[bin]]
 name = "ifconfig-rs"
