@@ -70,7 +70,8 @@ pub fn rocket() -> Rocket {
                 user_agent::plain_cli,
                 user_agent::json,
                 user_agent::plain,
-                user_agent::json_json
+                user_agent::json_json,
+                files
             ],
         )
         .attach(Template::fairing())

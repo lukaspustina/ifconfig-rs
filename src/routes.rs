@@ -7,7 +7,9 @@ use guards::*;
 use handlers;
 use rocket_contrib::{Json, Value as JsonValue};
 use rocket::{Request, State};
+use rocket::response::NamedFile;
 use rocket_contrib::Template;
+use std::path::{Path, PathBuf};
 
 #[get("/", rank = 1)]
 fn root_plain_cli(
@@ -132,3 +134,8 @@ route!(isp, "/isp", "/isp/json");
 route!(location, "/location", "/location/json");
 
 route!(user_agent, "/user_agent", "/user_agent/json");
+
+#[get("/<file..>", rank = 5)]
+fn files(file: PathBuf) -> Option<NamedFile> {
+    NamedFile::open(Path::new("htdocs/").join(file)).ok()
+}
