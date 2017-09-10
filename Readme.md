@@ -67,7 +67,11 @@ You have to run `make get_geoip` to retrieve the latest MaxMind geoip and ASN da
 
 ## FAQ
 
-  * Where is [myip.rs](http://myip.rs)  hosted?
+  * The IP address is wrong! WTH?
+
+    Yes, that's possible. It turns out that determining the originating IP address of an HTTP request is not as easy as it might seem. For example, there might be transparent proxies, load balancers, and even NAT gateways on the path from your browser to _ifconfig-rs_. Even though, _ifconfig-rs_ uses a heuristic to determine the originating IP address, information may be hidden or removed which might lead to wrong results. If you encouter such a scenario, open an issue on [GitHub](https://github.com/lukaspustina/ifconfig-rs/issues) and let's try to enhance the heuristic together.
+
+  * Where is [myip.rs](http://myip.rs) hosted?
 
     The code runs on a free <a href="https://heroku.com">Heroku</a> Autoscaling Dnyo that powers down when there are no service accesses for a period of time. This may lead to a large delay for the first request triggering a service restart.
 

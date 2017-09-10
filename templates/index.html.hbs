@@ -359,6 +359,20 @@
                                     <div class="uk-width-1-1@s">
                                         <div>
                                             <dl class="uk-description-list">
+                                                <dt>The IP address is wrong! WHT?</dt>
+                                                <dd>
+                                                    Yes, that's possible. It turns out that determining the originating IP
+                                                    address of an HTTP request is not as easy as it might seem. For example,
+                                                    there might be transparent proxies, load balancers, and even NAT gateways
+                                                    on the path from your browser to <em>{{ project.name }}</em>. Even though,
+                                                    <em>{{ project.name }}</em> uses a heuristic to determine the originating IP
+                                                    address, information may be hidden or removed which might lead to wrong
+                                                    results. If you encounter such a scenario, open an issue on
+                                                    <a href="https://github.com/lukaspustina/ifconfig-rs/issues">GitHub</a> and
+                                                    let's try to enhance the heuristic together.
+                                                </dd>
+                                            </dl>
+                                            <dl class="uk-description-list">
                                                 <dt>Where is <em>{{ project.name }}</em> hosted?</dt>
                                                 <dd>
                                                     The code runs on a free <a href="https://heroku.com">Heroku</a> Autoscaling
