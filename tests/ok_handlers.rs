@@ -272,7 +272,7 @@ fn handle_isp_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("Google Inc.\n".into()));
+    assert_eq!(response.body_string(), Some("Google LLC\n".into()));
 }
 
 #[test]
@@ -286,7 +286,7 @@ fn handle_isp_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("Google Inc.\n".into()));
+    assert_eq!(response.body_string(), Some("Google LLC\n".into()));
 }
 
 #[test]
@@ -301,7 +301,7 @@ fn handle_isp_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"name":"Google Inc."}"#;
+    let expected = r#"{"name":"Google LLC"}"#;
     assert_eq!(response.body_string(), Some(expected.into()));
 }
 
@@ -316,7 +316,7 @@ fn handle_isp_json_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"name":"Google Inc."}"#;
+    let expected = r#"{"name":"Google LLC"}"#;
     assert_eq!(response.body_string(), Some(expected.into()));
 }
 
