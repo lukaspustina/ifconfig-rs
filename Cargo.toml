@@ -24,7 +24,7 @@ path = "src/main.rs"
 
 [dependencies]
 clap = "2"
-dns-lookup = "0.3"
+dns-lookup = "0.9"
 error-chain = "0.11.0-rc.2"
 hyper = "0.10"
 lazy_static = "0.2"
