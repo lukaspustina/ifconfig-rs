@@ -63,7 +63,7 @@ fn root_json_json(
     handlers::root::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
-#[error(404)]
+#[catch(404)]
 fn not_found(_: &Request) -> String {
     "not implemented".to_string()
 }

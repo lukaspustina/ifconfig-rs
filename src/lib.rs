@@ -38,7 +38,7 @@ pub struct ProjectInfo {
 
 pub fn rocket() -> Rocket {
     let mut rocket = rocket::ignite()
-        .catch(errors![not_found])
+        .catch(catchers![not_found])
         .mount(
             "/",
             routes![
