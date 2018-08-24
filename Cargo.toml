@@ -39,7 +39,7 @@ toml = "0.4"
 woothee = "0.7"
 
 [dependencies.rocket_contrib]
-version = "0.3.14"
+version = "0.3.16"
 default-features = false
 features = ["handlebars_templates", "json"]
 
