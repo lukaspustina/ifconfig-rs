@@ -200,13 +200,44 @@ fn handle_tcp_json_json() {
 }
 
 #[test]
-fn handle_host_plain_cli() {
+fn handle_host_plain_cli_curl() {
     let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
         .header(Accept::Any)
         .header(UserAgent("curl/7.54.0".into()))
+        .dispatch();
+    eprintln!("{:?}", response);
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::Plain));
+    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
+}
+
+#[test]
+fn handle_host_plain_cli_httpie() {
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
+    let mut response = client
+        .get("/host")
+        .remote("8.8.8.8:8000".parse().unwrap())
+        .header(Accept::Any)
+        .header(UserAgent("HTTPie/0.9.9".into()))
+        .dispatch();
+    eprintln!("{:?}", response);
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::Plain));
+    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
+}
+
+
+#[test]
+fn handle_host_plain_cli_wget() {
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
+    let mut response = client
+        .get("/host")
+        .remote("8.8.8.8:8000".parse().unwrap())
+        .header(Accept::Any)
+        .header(UserAgent("Wget/1.19.5 (darwin17.5.0)".into()))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -386,12 +417,12 @@ fn handle_user_agent_plain_cli() {
         .get("/user_agent")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(UserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8".to_string()))
+        .header(UserAgent("Wget/1.19.5 (darwin17.5.0)".to_string()))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("Safari, 10.1.2, Mac OSX, 10.12.6\n".into()));
+    assert_eq!(response.body_string(), Some("HTTP Library, wget, UNKNOWN, UNKNOWN\n".into()));
 }
 
 #[test]
