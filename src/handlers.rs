@@ -5,7 +5,7 @@ use super::ProjectInfo;
 use backend::*;
 use guards::*;
 use rocket::State;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 
 pub fn root_html(
     project_info: State<ProjectInfo>,
@@ -33,7 +33,7 @@ pub fn root_html(
     let context = Context {
         ifconfig,
         project: &project_info,
-        uri: req_info.uri,
+        uri: req_info.uri.as_ref(),
     };
     Template::render("index", &context)
 }
@@ -44,8 +44,8 @@ macro_rules! handler {
             use backend::*;
             use guards::*;
             use rocket::State;
-            use rocket_contrib::{Json, Value as JsonValue};
-            use serde_json;
+            use rocket_contrib::json::{Json};
+            use serde_json::{Value as JsonValue};
 
             fn to_json($ifconfig: Ifconfig) -> $ty {
                 $json

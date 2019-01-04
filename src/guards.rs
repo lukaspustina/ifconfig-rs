@@ -9,7 +9,7 @@ use std::net::SocketAddr;
 pub struct RequesterInfo<'a> {
     pub remote: SocketAddr,
     pub user_agent: Option<&'a str>,
-    pub uri: &'a str,
+    pub uri: String,
 }
 
 impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
@@ -26,7 +26,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for RequesterInfo<'a> {
         let request_info = RequesterInfo {
             remote: remote,
             user_agent: user_agent,
-            uri: req.uri().as_str(),
+            uri: req.uri().to_string(),
         };
         Outcome::Success(request_info)
     }
@@ -56,8 +56,12 @@ impl<'a, 'r> FromRequest<'a, 'r> for CliClientRequest<'a> {
             ]).unwrap();
         }
 
+
         let user_agent_header = req.headers().get_one("User-Agent");
         let accept_header = req.headers().get_one("Accept");
+
+        println!("user_agent_header = {:#?}", user_agent_header);
+        println!("accept_header = {:#?}", accept_header);
 
         match (user_agent_header, accept_header) {
             (Some(uah), Some("*/*")) if !RE_SET.matches(uah).matched(0) => Outcome::Success(CliClientRequest { user_agent_header: uah }),

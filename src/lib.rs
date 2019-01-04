@@ -1,11 +1,11 @@
-#![feature(plugin)]
-#![plugin(rocket_codegen)]
+#![feature(proc_macro_hygiene, decl_macro)]
 
 extern crate dns_lookup;
 #[macro_use]
 extern crate lazy_static;
 extern crate maxminddb;
 extern crate regex;
+#[macro_use]
 extern crate rocket;
 extern crate rocket_contrib;
 #[macro_use]
@@ -24,7 +24,7 @@ use fairings::*;
 use routes::*;
 
 use rocket::Rocket;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 
 static PROJECT_NAME: &'static str = env!("CARGO_PKG_NAME");
 static PROJECT_VERSION: &'static str = env!("CARGO_PKG_VERSION");
@@ -38,7 +38,7 @@ pub struct ProjectInfo {
 
 pub fn rocket() -> Rocket {
     let mut rocket = rocket::ignite()
-        .catch(catchers![not_found])
+        .register(catchers![not_found])
         .mount(
             "/",
             routes![

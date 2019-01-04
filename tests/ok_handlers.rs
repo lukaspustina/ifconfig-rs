@@ -1,14 +1,13 @@
 extern crate ifconfig_rs;
 extern crate rocket;
 
-use ifconfig_rs::rocket;
 use rocket::local::Client;
 use rocket::http::{Accept, ContentType, Status};
 use rocket::http::hyper::header::UserAgent;
 
 #[test]
 fn handle_root_plain_cli() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -23,7 +22,7 @@ fn handle_root_plain_cli() {
 
 #[test]
 fn handle_root_plain() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -37,7 +36,7 @@ fn handle_root_plain() {
 
 #[test]
 fn handle_root_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -53,7 +52,7 @@ fn handle_root_json() {
 
 #[test]
 fn handle_root_html() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -67,7 +66,7 @@ fn handle_root_html() {
 
 #[test]
 fn handle_root_json_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/json")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -82,7 +81,7 @@ fn handle_root_json_json() {
 
 #[test]
 fn handle_ip_plain_cli() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/ip")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -97,7 +96,7 @@ fn handle_ip_plain_cli() {
 
 #[test]
 fn handle_ip_plain() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/ip")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -111,7 +110,7 @@ fn handle_ip_plain() {
 
 #[test]
 fn handle_ip_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/ip")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -127,7 +126,7 @@ fn handle_ip_json() {
 
 #[test]
 fn handle_ip_json_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/ip/json")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -142,7 +141,7 @@ fn handle_ip_json_json() {
 
 #[test]
 fn handle_tcp_plain_cli() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/tcp")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -157,7 +156,7 @@ fn handle_tcp_plain_cli() {
 
 #[test]
 fn handle_tcp_plain() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/tcp")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -171,7 +170,7 @@ fn handle_tcp_plain() {
 
 #[test]
 fn handle_tcp_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/tcp")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -187,7 +186,7 @@ fn handle_tcp_json() {
 
 #[test]
 fn handle_tcp_json_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/tcp/json")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -202,7 +201,7 @@ fn handle_tcp_json_json() {
 
 #[test]
 fn handle_host_plain_cli() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -217,7 +216,7 @@ fn handle_host_plain_cli() {
 
 #[test]
 fn handle_host_plain() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -231,7 +230,7 @@ fn handle_host_plain() {
 
 #[test]
 fn handle_host_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -247,7 +246,7 @@ fn handle_host_json() {
 
 #[test]
 fn handle_host_json_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/host/json")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -262,7 +261,7 @@ fn handle_host_json_json() {
 
 #[test]
 fn handle_isp_plain_cli() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/isp")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -277,7 +276,7 @@ fn handle_isp_plain_cli() {
 
 #[test]
 fn handle_isp_plain() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/isp")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -291,7 +290,7 @@ fn handle_isp_plain() {
 
 #[test]
 fn handle_isp_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/isp")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -307,7 +306,7 @@ fn handle_isp_json() {
 
 #[test]
 fn handle_isp_json_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/isp/json")
         .remote("8.8.8.8:8000".parse().unwrap())
@@ -322,7 +321,7 @@ fn handle_isp_json_json() {
 
 #[test]
 fn handle_location_plain_cli() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/location")
         .remote("93.184.216.34:8000".parse().unwrap())
@@ -337,7 +336,7 @@ fn handle_location_plain_cli() {
 
 #[test]
 fn handle_location_plain() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/location")
         .remote("93.184.216.34:8000".parse().unwrap())
@@ -351,7 +350,7 @@ fn handle_location_plain() {
 
 #[test]
 fn handle_location_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/location")
         .remote("93.184.216.34:8000".parse().unwrap())
@@ -367,7 +366,7 @@ fn handle_location_json() {
 
 #[test]
 fn handle_location_json_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/location/json")
         .remote("93.184.216.34:8000".parse().unwrap())
@@ -382,7 +381,7 @@ fn handle_location_json_json() {
 
 #[test]
 fn handle_user_agent_plain_cli() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/user_agent")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -397,7 +396,7 @@ fn handle_user_agent_plain_cli() {
 
 #[test]
 fn handle_user_agent_plain() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/user_agent")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -412,7 +411,7 @@ fn handle_user_agent_plain() {
 
 #[test]
 fn handle_user_agent_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/user_agent")
         .remote("192.168.0.101:8000".parse().unwrap())
@@ -428,7 +427,7 @@ fn handle_user_agent_json() {
 
 #[test]
 fn handle_user_agent_json_json() {
-    let client = Client::new(rocket()).expect("valid rocket instance");
+    let client = Client::new(ifconfig_rs::rocket()).expect("valid rocket instance");
     let mut response = client
         .get("/user_agent/json")
         .remote("192.168.0.101:8000".parse().unwrap())

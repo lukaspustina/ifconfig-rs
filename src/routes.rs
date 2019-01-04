@@ -5,14 +5,15 @@ use super::ProjectInfo;
 use backend::*;
 use guards::*;
 use handlers;
-use rocket_contrib::{Json, Value as JsonValue};
+use rocket_contrib::json::Json;
 use rocket::{Request, State};
 use rocket::response::NamedFile;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
+use serde_json::{Value as JsonValue};
 use std::path::{Path, PathBuf};
 
 #[get("/", rank = 1)]
-fn root_plain_cli(
+pub(crate) fn root_plain_cli(
     req_info: RequesterInfo,
     _cli_req: CliClientRequest,
     user_agent_parser: State<UserAgentParser>,
@@ -22,18 +23,8 @@ fn root_plain_cli(
     handlers::root::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
-#[get("/", format = "application/json", rank = 2)]
-fn root_json(
-    req_info: RequesterInfo,
-    user_agent_parser: State<UserAgentParser>,
-    geoip_city_db: State<GeoIpCityDb>,
-    geoip_asn_db: State<GeoIpAsnDb>,
-) -> Option<Json<JsonValue>> {
-    handlers::root::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
-}
-
-#[get("/", format = "text/plain" , rank = 2)]
-fn root_plain(
+#[get("/", format = "text/plain", rank = 2)]
+pub(crate) fn root_plain(
     req_info: RequesterInfo,
     user_agent_parser: State<UserAgentParser>,
     geoip_city_db: State<GeoIpCityDb>,
@@ -42,8 +33,18 @@ fn root_plain(
     handlers::root::plain(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
 }
 
-#[get("/", rank = 3)]
-fn root_html(
+#[get("/", format = "application/json", rank = 3)]
+pub(crate) fn root_json(
+    req_info: RequesterInfo,
+    user_agent_parser: State<UserAgentParser>,
+    geoip_city_db: State<GeoIpCityDb>,
+    geoip_asn_db: State<GeoIpAsnDb>,
+) -> Option<Json<JsonValue>> {
+    handlers::root::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
+}
+
+#[get("/", rank = 4)]
+pub(crate) fn root_html(
     project_info: State<ProjectInfo>,
     req_info: RequesterInfo,
     user_agent_parser: State<UserAgentParser>,
@@ -54,7 +55,7 @@ fn root_html(
 }
 
 #[get("/json")]
-fn root_json_json(
+pub(crate) fn root_json_json(
     req_info: RequesterInfo,
     user_agent_parser: State<UserAgentParser>,
     geoip_city_db: State<GeoIpCityDb>,
@@ -64,7 +65,7 @@ fn root_json_json(
 }
 
 #[catch(404)]
-fn not_found(_: &Request) -> String {
+pub(crate) fn not_found(_: &Request) -> String {
     "not implemented".to_string()
 }
 
@@ -74,11 +75,12 @@ macro_rules! route {
             use backend::*;
             use guards::*;
             use handlers;
-            use rocket_contrib::{Json, Value as JsonValue};
             use rocket::State;
+            use rocket_contrib::json::Json;
+            use serde_json::{Value as JsonValue};
 
             #[get($route, rank = 1)]
-            fn plain_cli(
+            pub(crate) fn plain_cli(
                 req_info: RequesterInfo,
                 _cli_req: CliClientRequest,
                 user_agent_parser: State<UserAgentParser>,
@@ -89,7 +91,7 @@ macro_rules! route {
             }
 
             #[get($route, format = "application/json", rank = 2)]
-            fn json(
+            pub(crate) fn json(
                 req_info: RequesterInfo,
                 user_agent_parser: State<UserAgentParser>,
                 geoip_city_db: State<GeoIpCityDb>,
@@ -99,7 +101,7 @@ macro_rules! route {
             }
 
             #[get($route, rank = 3)]
-            fn plain(
+            pub(crate) fn plain(
                 req_info: RequesterInfo,
                 user_agent_parser: State<UserAgentParser>,
                 geoip_city_db: State<GeoIpCityDb>,
@@ -109,7 +111,7 @@ macro_rules! route {
             }
 
             #[get($route_json)]
-            fn json_json(
+            pub(crate) fn json_json(
                 req_info: RequesterInfo,
                 user_agent_parser: State<UserAgentParser>,
                 geoip_city_db: State<GeoIpCityDb>,
@@ -136,6 +138,6 @@ route!(location, "/location", "/location/json");
 route!(user_agent, "/user_agent", "/user_agent/json");
 
 #[get("/<file..>", rank = 5)]
-fn files(file: PathBuf) -> Option<NamedFile> {
+pub(crate) fn files(file: PathBuf) -> Option<NamedFile> {
     NamedFile::open(Path::new("htdocs/").join(file)).ok()
 }
