@@ -391,7 +391,7 @@ fn handle_location_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1508,"longitude":-70.8228}"#;
+    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1596,"longitude":-70.8217}"#;
     assert_eq!(response.body_string(), Some(expected.into()));
 }
 
@@ -406,7 +406,7 @@ fn handle_location_json_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1508,"longitude":-70.8228}"#;
+    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1596,"longitude":-70.8217}"#;
     assert_eq!(response.body_string(), Some(expected.into()));
 }
 
