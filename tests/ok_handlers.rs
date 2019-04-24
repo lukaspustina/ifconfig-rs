@@ -1,5 +1,9 @@
 extern crate ifconfig_rs;
 extern crate rocket;
+#[macro_use]
+extern crate serde_json;
+
+use ifconfig_rs::backend::Ifconfig;
 
 use rocket::local::Client;
 use rocket::http::{Accept, ContentType, Status};
@@ -46,8 +50,30 @@ fn handle_root_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"host":{"name":"192.168.0.101"},"ip":{"addr":"192.168.0.101","version":"4"},"isp":null,"location":null,"tcp":{"port":8000},"user_agent":null,"user_agent_header":"Some browser that will ultimately win the war."}"#;
-    assert_eq!(response.body_string(), Some(expected.into()));
+
+    let expected_json = json!({
+        "host": {
+            "name": "192.168.0.101"
+        },
+        "ip": {
+            "addr": "192.168.0.101",
+            "version": "4"
+        },
+        "isp": null,
+        "location": null,
+        "tcp": {
+            "port": 8000
+        },
+        "user_agent": null,
+        "user_agent_header": "Some browser that will ultimately win the war."
+    });
+    let expected_str = expected_json.to_string();
+    let expected: Ifconfig = serde_json::from_str(&expected_str).unwrap();
+
+    let body = response.body_string().unwrap();
+    let answer: Ifconfig = serde_json::from_str(&body).unwrap();
+
+    assert_eq!(answer.ip, expected.ip);
 }
 
 #[test]
@@ -75,8 +101,30 @@ fn handle_root_json_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"host":{"name":"192.168.0.101"},"ip":{"addr":"192.168.0.101","version":"4"},"isp":null,"location":null,"tcp":{"port":8000},"user_agent":null,"user_agent_header":"Some browser that will ultimately win the war."}"#;
-    assert_eq!(response.body_string(), Some(expected.into()));
+
+    let expected_json = json!({
+        "host": {
+            "name": "192.168.0.101"
+        },
+        "ip": {
+            "addr": "192.168.0.101",
+            "version": "4"
+        },
+        "isp": null,
+        "location": null,
+        "tcp": {
+            "port": 8000
+        },
+        "user_agent": null,
+        "user_agent_header": "Some browser that will ultimately win the war."
+    });
+    let expected_str = expected_json.to_string();
+    let expected: Ifconfig = serde_json::from_str(&expected_str).unwrap();
+
+    let body = response.body_string().unwrap();
+    let answer: Ifconfig = serde_json::from_str(&body).unwrap();
+
+    assert_eq!(answer.ip, expected.ip);
 }
 
 #[test]

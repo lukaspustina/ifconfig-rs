@@ -3,18 +3,18 @@ use maxminddb::{self, geoip2};
 use std::net::SocketAddr;
 use woothee;
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Host {
     pub name: String,
 }
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ip<'a> {
     pub addr: String,
     pub version: &'a str,
 }
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Tcp {
     pub port: u16,
 }
@@ -35,7 +35,7 @@ impl GeoIpAsnDb {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Location {
     pub city: Option<String>,
     pub country: Option<String>,
@@ -43,7 +43,7 @@ pub struct Location {
     pub longitude: Option<f64>,
 }
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Isp {
     pub name: Option<String>,
 }
@@ -51,7 +51,7 @@ pub struct Isp {
 pub type UserAgentParser = woothee::parser::Parser;
 pub type UserAgentParserResult<'a> = woothee::parser::WootheeResult<'a>;
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct UserAgent<'a> {
     pub name: &'a str,
     pub category: &'a str,
@@ -76,7 +76,7 @@ impl<'a> From<UserAgentParserResult<'a>> for UserAgent<'a> {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ifconfig<'a> {
     pub host: Host,
     pub ip: Ip<'a>,
