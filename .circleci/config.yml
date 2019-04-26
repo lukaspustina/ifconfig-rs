@@ -38,8 +38,6 @@ commands:
     parameters:
       app_name:
         type: string
-    executor:
-      heroku/default
     steps:
       - checkout
       - heroku/install
@@ -56,10 +54,14 @@ jobs:
       - rust_build:
           rust_channel: nightly
   deploy-prod:
+    executor:
+      heroku/default
     steps:
       - heroku_deploy:
           app_name: ifconfig-rs
   deploy-staging:
+    executor:
+      heroku/default
     steps:
       - heroku_deploy:
           app_name: ifconfig-rs-staging
