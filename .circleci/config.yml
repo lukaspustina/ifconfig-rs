@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  heroku: circleci/heroku@1.0.0
+
 commands:
   rust_build:
     description: "Run cargo build workflow with specific Rust version"
@@ -16,7 +19,7 @@ commands:
           command: cargo generate-lockfile
       - restore_cache:
           keys:
-            - v1-cargo-cache-<<parameters.rust_channel>>-{{ arch }}-{{ checksum "Cargo.lock" }}
+            - v1-cargo-cache-<< parameters.rust_channel >>-{{ arch }}-{{ checksum "Cargo.lock" }}
       - run:
           name: Build all targets
           command: cargo build --all --all-targets
@@ -29,22 +32,52 @@ commands:
             - target/debug/.fingerprint
             - target/debug/build
             - target/debug/deps
-          key: v1-cargo-cache-<<parameters.rust_channel>>-{{ arch }}-{{ checksum "Cargo.lock" }}
+          key: v1-cargo-cache-<< parameters.rust_channel >>-{{ arch }}-{{ checksum "Cargo.lock" }}
+  heroku_deploy:
+    description: "Deploys app to Heroku"
+    parameters:
+      app_name:
+        type: string
+      branch_name:
+        type: string
+        default: master
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          api-key: $HEROKU_API_KEY
+          app-name: << parameters.app_name >>
+          only-branch: <<  parameters.branch_name >>
+
 
 jobs:
-  nightly:
+  build:
     docker:
       - image: rustlang/rust:nightly
     steps:
       - rust_build:
           rust_channel: nightly
+  deploy:
+    executor:
+      heroku/default
+    steps:
+      - heroku_deploy:
+          app_name: ifconfig-rs-staging
+          branch_name: heroku-staging
 
 
 workflows:
   version: 2
-  build:
+  build-deploy:
     jobs:
-      - nightly
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: heroku-staging
+          context: ifconfig-rs
   cron:
     triggers:
       - schedule:
