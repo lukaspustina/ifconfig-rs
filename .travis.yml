@@ -1,9 +1,9 @@
-dist: trusty
+dist: bionic
 language: rust
 services: docker
 sudo: required
 env:
-  global: 
+  global:
 matrix:
   include:
   - env: TARGET=x86_64-unknown-linux-gnu DEPLOY=1
@@ -20,7 +20,9 @@ branches:
   - heroku-prod
   - heroku-staging
   - "/^v.*$/"
-before_install: set -e
+before_install:
+- set -e
+- lsb_release -a
 install:
 - sh .ci/install.sh
 - source ~/.cargo/env || true
