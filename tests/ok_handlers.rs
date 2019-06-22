@@ -259,7 +259,7 @@ fn handle_host_plain_cli_curl() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
+    assert_eq!(response.body_string(), Some("dns.google\n".into()));
 }
 
 #[test]
@@ -274,7 +274,7 @@ fn handle_host_plain_cli_httpie() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
+    assert_eq!(response.body_string(), Some("dns.google\n".into()));
 }
 
 
@@ -290,7 +290,7 @@ fn handle_host_plain_cli_wget() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
+    assert_eq!(response.body_string(), Some("dns.google\n".into()));
 }
 
 #[test]
@@ -304,7 +304,7 @@ fn handle_host_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.body_string(), Some("google-public-dns-a.google.com\n".into()));
+    assert_eq!(response.body_string(), Some("dns.google\n".into()));
 }
 
 #[test]
@@ -319,7 +319,7 @@ fn handle_host_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"name":"google-public-dns-a.google.com"}"#;
+    let expected = r#"{"name":"dns.google"}"#;
     assert_eq!(response.body_string(), Some(expected.into()));
 }
 
@@ -334,7 +334,7 @@ fn handle_host_json_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"name":"google-public-dns-a.google.com"}"#;
+    let expected = r#"{"name":"dns.google"}"#;
     assert_eq!(response.body_string(), Some(expected.into()));
 }
 
