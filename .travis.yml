@@ -18,7 +18,7 @@ matrix:
     dist: bionic
     sudo: required
     rust: nightly
-    env: TARGET=x86_64-unknown-linux-gnu
+    env: TARGET=x86_64-unknown-linux-gnu DEPLOY=1
   - os: linux
     dist: bionic
     sudo: required
