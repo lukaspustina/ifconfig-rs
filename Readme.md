@@ -1,6 +1,6 @@
 # ifconfig-rs
 
-[![Production deployed](https://img.shields.io/badge/myip.rs-prod-brightgreen.svg)](http://myip.rs) [![Build Status](https://travis-ci.org/lukaspustina/ifconfig-rs.svg?branch=master)](https://travis-ci.org/lukaspustina/ifconfig-rs) [![GitHub release](https://img.shields.io/github/release/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/releases) [![license](https://img.shields.io/github/license/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/blob/master/LICENSE)
+[![Production deployed](https://img.shields.io/badge/myip.rs-prod-brightgreen.svg)](http://myip.rs) [![Build Status](https://circleci.com/gh/lukaspustina/netatmo-rs.svg?style=shield)](https://circleci.com/gh/lukaspustina/netatmo-rs) [![GitHub release](https://img.shields.io/github/release/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/releases) [![license](https://img.shields.io/github/license/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/blob/master/LICENSE)
 
 _ifconfig-rs_ is yet another <a href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a> service currently powering [myip.rs](http://myip.rs). It is written in <a href="https://www.rust-lang.org/"> Rust</a> (hence the "-rs" suffix) using the <a href="https://rocket.rs">Rocket</a> web framework and includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>. The UI is made with <a href="https://getuikit.com">uikit</a>. It is MIT licensed so please feel free to clone and to fork it.
 
@@ -38,7 +38,7 @@ _ifconfig_rs_ offers an API to query information like the origin's IP address, T
 Well, first of all, everybody should have a "What's my IP" service and I wanted to do a little web project using [Rust](https://www.rust-lang.org) and [Rocket](https://rocket.rs). I have been strongly inspired by [ipd](https://github.com/mpolden/ipd) which powers [iconfig.co](http://ifconfig.co). I've added a few details though and I think the UI is nicer.
 
 
-## Customaziation
+## Customization
 
 The file [Rocket.toml](Rocket.toml) sets the various runtime parameters.
 
