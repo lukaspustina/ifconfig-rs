@@ -1,14 +1,14 @@
-[development]
+[debug]
 address = "0.0.0.0"
 log = "normal"
 geoip_city_db = "geoip/GeoLite2-City.mmdb"
 geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"
 project_name = "myip.rs"
-project_base_url = "localhost"
+base_url = "localhost"
 
-[production]
+[release]
 runtime_environment = "heroku"
 geoip_city_db = "geoip/GeoLite2-City.mmdb"
 geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"
 project_name = "myip.rs"
-project_base_url = "myip.rs"
+base_url = "myip.rs"

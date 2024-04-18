@@ -2,6 +2,8 @@ extern crate ifconfig_rs;
 
 use ifconfig_rs::rocket;
 
-fn main() {
-    rocket().launch();
+#[rocket::main]
+async fn main() -> Result<(), rocket::Error> {
+    let _rocket = rocket().launch().await?;
+    Ok(())
 }

@@ -7,6 +7,7 @@ use std::net::SocketAddr;
 #[derive(Default)]
 pub struct HerokuForwardedFor;
 
+#[rocket::async_trait]
 impl Fairing for HerokuForwardedFor {
     fn info(&self) -> Info {
         Info {
@@ -15,7 +16,7 @@ impl Fairing for HerokuForwardedFor {
         }
     }
 
-    fn on_request(&self, request: &mut Request, _: &Data) {
+    async fn on_request(&self, request: &mut Request<'_>, _: &mut Data<'_>) {
         let new_remote = if let Some(xfr) = request.headers().get_one("X-Forwarded-For") {
             if let Some(remote) = request.remote() {
                 if let Ok(ip) = IpAddr::from_str(xfr) {
@@ -34,7 +35,7 @@ impl Fairing for HerokuForwardedFor {
         }
     }
 
-    fn on_response(&self, _: &Request, _: &mut Response) {
+    async fn on_response<'r>(&self, _request: &'r Request<'_>, _response: &mut Response<'r>) {
         return;
     }
 }

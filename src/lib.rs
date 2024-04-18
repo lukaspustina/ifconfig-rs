@@ -1,5 +1,3 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
 extern crate dns_lookup;
 #[macro_use]
 extern crate lazy_static;
@@ -7,9 +5,9 @@ extern crate maxminddb;
 extern crate regex;
 #[macro_use]
 extern crate rocket;
-extern crate rocket_contrib;
+extern crate rocket_dyn_templates;
 #[macro_use]
-extern crate serde_derive;
+extern crate serde;
 extern crate serde_json;
 extern crate woothee;
 
@@ -23,22 +21,64 @@ use backend::*;
 use fairings::*;
 use routes::*;
 
-use rocket::Rocket;
-use rocket_contrib::templates::Template;
+use rocket::{Rocket, Build};
+use rocket_dyn_templates::Template;
 
-static PROJECT_NAME: &'static str = env!("CARGO_PKG_NAME");
-static PROJECT_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+#[derive(Debug, Deserialize)]
+pub enum Runtime {
+    HEROKU,
+    LOCAL
+}
+
+impl Default for Runtime {
+    fn default() -> Self {
+        Runtime::LOCAL
+    }
+}
+
+#[derive(Deserialize)]
+#[serde(crate = "rocket::serde")]
+pub struct Config {
+    #[serde(default = "ProjectInfo::default_name")]
+    name: String,
+    #[serde(default = "ProjectInfo::default_version")]
+    version: String,
+    #[serde(default)]
+    runtime: Runtime,
+    base_url: String,
+    geoip_city_db: Option<String>,
+    geoip_asn_db: Option<String>
+}
 
 #[derive(Serialize)]
 pub struct ProjectInfo {
     name: String,
     version: String,
-    base_url: String,
+    base_url: String
 }
 
-pub fn rocket() -> Rocket {
-    let mut rocket = rocket::ignite()
-        .register(catchers![not_found])
+impl ProjectInfo {
+    fn default_name() -> String {
+        env!("CARGO_PKG_NAME").to_string()
+    }
+    fn default_version() -> String {
+        env!("CARGO_PKG_VERSION").to_string()
+    }
+}
+
+impl From<&Config> for ProjectInfo {
+    fn from(config: &Config) -> Self {
+        ProjectInfo {
+            name: config.name.clone(),
+            version: config.version.clone(),
+            base_url: config.base_url.clone()
+        }
+    }
+}
+
+pub fn rocket() -> Rocket<Build> {
+    let mut rocket = rocket::build()
+        .register("/", catchers![not_found])
         .mount(
             "/",
             routes![
@@ -77,36 +117,28 @@ pub fn rocket() -> Rocket {
         .attach(Template::fairing())
         .manage(init_user_agent_parser());
 
-    rocket = match rocket.config().get_str("runtime_environment") {
-        Ok("heroku") => rocket.attach(HerokuForwardedFor::default()),
+    let config: Config = rocket.figment().extract().expect("config");
+
+    rocket = match config.runtime {
+         Runtime::HEROKU => rocket.attach(HerokuForwardedFor::default()),
         _ => rocket,
     };
 
 
-    let project_info = ProjectInfo {
-        name: rocket.config().get_str("project_name").unwrap_or(PROJECT_NAME ).to_string(),
-        version: PROJECT_VERSION.to_string(),
-        base_url: rocket.config().get_str("project_base_url").expect("config setting base URL").to_string(),
-    };
+    let project_info = ProjectInfo::from(&config);
     rocket = rocket.manage(project_info);
 
-    rocket = match rocket
-        .config()
-        .get_str("geoip_city_db")
-        .map(|s| s.to_string())
-        {
-            Ok(db) => rocket.manage(init_geoip_city_db(&db)),
-            _ => rocket,
-        };
+    rocket = match &config.geoip_city_db {
+        Some(db) => rocket.manage(init_geoip_city_db(db)),
+        _ => rocket,
+    };
 
-    rocket = match rocket
-        .config()
-        .get_str("geoip_asn_db")
-        .map(|s| s.to_string())
-        {
-            Ok(db) => rocket.manage(init_geoip_asn_db(&db)),
-            _ => rocket,
-        };
+
+    rocket = match &config.geoip_asn_db {
+        Some(db) => rocket.manage(init_geoip_asn_db(db)),
+        _ => rocket,
+    };
+
 
     rocket
 }

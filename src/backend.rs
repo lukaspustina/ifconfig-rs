@@ -78,7 +78,7 @@ impl<'a> From<UserAgentParserResult<'a>> for UserAgent<'a> {
 
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ifconfig<'a> {
-    pub host: Host,
+    pub host: Option<Host>,
     pub ip: Ip<'a>,
     pub tcp: Tcp,
     pub location: Option<Location>,
@@ -96,8 +96,7 @@ pub struct IfconfigParam<'a> {
 }
 
 pub fn get_ifconfig<'a>(param: &'a IfconfigParam<'a>) -> Ifconfig<'a> {
-    let hostname = dns_lookup::lookup_addr(&param.remote.ip()).expect("not found");
-    let host = Host { name: hostname };
+    let host = dns_lookup::lookup_addr(&param.remote.ip()).ok().map(|h| Host { name: h });
 
     let ip_addr = format!("{}", param.remote.ip());
     let ip_version = if param.remote.is_ipv4() { "4" } else { "6" };
