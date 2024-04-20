@@ -2,3 +2,4 @@
 **/*.rs.bk
 .idea/
 ifconfig-rs.iml
+geoip
