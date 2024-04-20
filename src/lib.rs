@@ -26,8 +26,10 @@ use rocket_dyn_templates::Template;
 
 #[derive(Debug, Default, Deserialize)]
 pub enum Runtime {
+    #[serde(rename = "heroku")]
     HEROKU,
     #[default]
+    #[serde(rename = "local")]
     LOCAL,
 }
 
@@ -35,9 +37,9 @@ pub enum Runtime {
 #[serde(crate = "rocket::serde")]
 pub struct Config {
     #[serde(default = "ProjectInfo::default_name")]
-    name: String,
+    project_name: String,
     #[serde(default = "ProjectInfo::default_version")]
-    version: String,
+    project_version: String,
     #[serde(default)]
     runtime: Runtime,
     base_url: String,
@@ -64,8 +66,8 @@ impl ProjectInfo {
 impl From<&Config> for ProjectInfo {
     fn from(config: &Config) -> Self {
         ProjectInfo {
-            name: config.name.clone(),
-            version: config.version.clone(),
+            name: config.project_name.clone(),
+            version: config.project_version.clone(),
             base_url: config.base_url.clone(),
         }
     }
