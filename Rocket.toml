@@ -1,3 +1,6 @@
+[default]
+limits = { form = "64 kB", json = "1 MiB" }
+
 [debug]
 address = "0.0.0.0"
 log = "normal"
@@ -7,6 +10,15 @@ project_name = "myip.rs"
 base_url = "localhost"
 
 [release]
+address = "0.0.0.0"
+port = 8000
+geoip_city_db = "geoip/GeoLite2-City.mmdb"
+geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"
+project_name = "myip.rs"
+base_url = "localhost"
+
+[heroku]
+address = "0.0.0.0"
 runtime_environment = "heroku"
 geoip_city_db = "geoip/GeoLite2-City.mmdb"
 geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"

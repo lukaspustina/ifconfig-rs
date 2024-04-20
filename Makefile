@@ -47,5 +47,8 @@ geoip:
 clean-geoip:
 	@-rm -R geoip
 
+docker-build:
+	docker build . --tag ifconfig-rs:$$(cargo read-manifest | jq ".version" -r)
+
 .PHONY: tests
 
