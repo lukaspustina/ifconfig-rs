@@ -5,11 +5,11 @@ authors = ["Lukas Pustina <lukas@pustina.net>"]
 
 description = "Yet another ifconfig / what's my IP service"
 repository = "https://github.com/lukaspustina/ifconfig-rs"
-readme = "README.md"
+readme = "Readme.md"
 license = "MIT"
-keywords = ["ifconfig", "ip", "network", "web service"]
+keywords = ["ifconfig", "ip", "network", "webservice"]
 include = [
-  "README.md",
+  "Readme.md",
   "LICENSE",
   "**/*.rs",
   "Cargo.toml",
@@ -21,20 +21,17 @@ name = "ifconfig-rs"
 path = "src/main.rs"
 
 [dependencies]
-clap = "2"
 dns-lookup = "2"
-error-chain = "0.11"
-hyper = "0.12"
 lazy_static = "1"
-maxminddb = "0.9"
+maxminddb = "0.24.0"
 regex = "1"
 rocket = { version = "0.5", features = ["json"] }
 rocket_dyn_templates = { version = "0.1.0", features = ["handlebars"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1.0"
 toml = "0.8"
-woothee = "0.7"
+woothee = "0.13.0"
 
 [dev-dependencies]
-pretty_assertions = "0.5"
+pretty_assertions = "1.4.0"
 

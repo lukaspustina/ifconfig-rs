@@ -19,33 +19,33 @@ pub struct Tcp {
     pub port: u16,
 }
 
-pub struct GeoIpCityDb(pub maxminddb::Reader);
+pub struct GeoIpCityDb(pub maxminddb::Reader<Vec<u8>>);
 
 impl GeoIpCityDb {
     pub fn new(db_path: &str) -> Option<Self> {
-        maxminddb::Reader::open(db_path).ok().map(GeoIpCityDb)
+        maxminddb::Reader::open_readfile(db_path).ok().map(GeoIpCityDb)
     }
 }
 
-pub struct GeoIpAsnDb(pub maxminddb::Reader);
+pub struct GeoIpAsnDb(pub maxminddb::Reader<Vec<u8>>);
 
 impl GeoIpAsnDb {
     pub fn new(db_path: &str) -> Option<Self> {
-        maxminddb::Reader::open(db_path).ok().map(GeoIpAsnDb)
+        maxminddb::Reader::open_readfile(db_path).ok().map(GeoIpAsnDb)
     }
 }
 
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
-pub struct Location {
-    pub city: Option<String>,
-    pub country: Option<String>,
+pub struct Location<'a> {
+    pub city: Option<&'a str>,
+    pub country: Option<&'a str>,
     pub latitude: Option<f64>,
     pub longitude: Option<f64>,
 }
 
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
-pub struct Isp {
-    pub name: Option<String>,
+pub struct Isp<'a> {
+    pub name: Option<&'a str>,
 }
 
 pub type UserAgentParser = woothee::parser::Parser;
@@ -58,7 +58,7 @@ pub struct UserAgent<'a> {
     pub os: &'a str,
     pub os_version: String,
     pub browser_type: &'a str,
-    pub version: String,
+    pub version: &'a str,
     pub vendor: &'a str,
 }
 
@@ -68,7 +68,7 @@ impl<'a> From<UserAgentParserResult<'a>> for UserAgent<'a> {
             name: ua.name,
             category: ua.category,
             os: ua.os,
-            os_version: ua.os_version,
+            os_version: ua.os_version.to_string(),
             browser_type: ua.browser_type,
             version: ua.version,
             vendor: ua.vendor,
@@ -81,8 +81,8 @@ pub struct Ifconfig<'a> {
     pub host: Option<Host>,
     pub ip: Ip<'a>,
     pub tcp: Tcp,
-    pub location: Option<Location>,
-    pub isp: Option<Isp>,
+    pub location: Option<Location<'a>>,
+    pub isp: Option<Isp<'a>>,
     pub user_agent: Option<UserAgent<'a>>,
     pub user_agent_header: Option<&'a str>,
 }

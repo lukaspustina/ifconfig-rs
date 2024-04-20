@@ -7,6 +7,8 @@ use crate::guards::*;
 use rocket::State;
 use rocket_dyn_templates::Template;
 
+pub(crate) static UNKNOWN_STR: &str = "unknown";
+
 pub fn root_html(
     project_info: &State<ProjectInfo>,
     req_info: RequesterInfo,
@@ -43,6 +45,8 @@ macro_rules! handler {
         pub mod $name {
             use crate::backend::*;
             use crate::guards::*;
+            #[allow(unused_imports)]
+            use crate::handlers::UNKNOWN_STR;
             use rocket::State;
             use rocket::serde::json::{Json};
             use serde_json::{Value as JsonValue};
@@ -108,17 +112,16 @@ handler!(ip, ifconfig, {ifconfig.ip}, Ip, {format!("{}\n", ifconfig.ip.addr)});
 
 handler!(tcp, ifconfig, {ifconfig.tcp}, Tcp, {format!("{}\n", ifconfig.tcp.port)});
 
-handler!(host, ifconfig, {ifconfig.host}, Option<Host>, {format!("{}\n", ifconfig.host.map(|h| h.name).unwrap_or_else(|| "unknown".to_string()))});
+handler!(host, ifconfig, {ifconfig.host}, Option<Host>, {format!("{}\n", ifconfig.host.map(|h| h.name).unwrap_or_else(|| UNKNOWN_STR.to_string()))});
 
 handler!(isp, ifconfig, {ifconfig.isp}, Option<Isp>, {format!("{}\n",
-    ifconfig.isp.and_then(|isp| isp.name).unwrap_or_else(|| "unknown".to_string())
+    ifconfig.isp.and_then(|isp| isp.name).unwrap_or_else(|| UNKNOWN_STR)
 )});
 
 handler!(location, ifconfig, {ifconfig.location}, Option<Location>, {
-    let unknown = "unknown".to_string();
     format!("{}, {}\n",
-        ifconfig.location.as_ref().and_then(|l| l.city.as_ref()).unwrap_or_else(|| &unknown),
-        ifconfig.location.as_ref().and_then(|l| l.country.as_ref()).unwrap_or_else(|| &unknown)
+        ifconfig.location.as_ref().and_then(|l| l.city).unwrap_or_else(|| UNKNOWN_STR),
+        ifconfig.location.as_ref().and_then(|l| l.country).unwrap_or_else(|| UNKNOWN_STR)
     )
 });
 
