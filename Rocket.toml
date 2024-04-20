@@ -1,5 +1,6 @@
 [default]
 limits = { form = "64 kB", json = "1 MiB" }
+log_level = "normal"
 
 [debug]
 address = "0.0.0.0"
@@ -8,6 +9,7 @@ geoip_city_db = "geoip/GeoLite2-City.mmdb"
 geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"
 project_name = "myip.rs"
 base_url = "localhost"
+log_level = "debug"
 
 [release]
 address = "0.0.0.0"
@@ -24,3 +26,5 @@ geoip_city_db = "geoip/GeoLite2-City.mmdb"
 geoip_asn_db = "geoip/GeoLite2-ASN.mmdb"
 project_name = "myip.rs"
 base_url = "myip.rs"
+log_level = "debug"
+cli_colors = false
