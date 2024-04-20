@@ -1,8 +1,8 @@
-use rocket::{Data, Request, Response};
 use rocket::fairing::{Fairing, Info, Kind};
-use std::str::FromStr;
+use rocket::{Data, Request, Response};
 use std::net::IpAddr;
 use std::net::SocketAddr;
+use std::str::FromStr;
 
 #[derive(Default)]
 pub struct HerokuForwardedFor;

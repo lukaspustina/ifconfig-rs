@@ -1,16 +1,14 @@
-#![allow(unknown_lints)] // for clippy
 #![allow(dead_code)] // for clippy
-#![allow(needless_pass_by_value)] // params are passed by value
 
-use crate::ProjectInfo;
 use crate::backend::*;
 use crate::guards::*;
 use crate::handlers;
+use crate::ProjectInfo;
+use rocket::fs::NamedFile;
 use rocket::serde::json::Json;
 use rocket::{Request, State};
-use rocket::fs::NamedFile;
 use rocket_dyn_templates::Template;
-use serde_json::{Value as JsonValue};
+use serde_json::Value as JsonValue;
 use std::path::{Path, PathBuf};
 
 #[get("/", rank = 1)]
@@ -76,9 +74,9 @@ macro_rules! route {
             use crate::backend::*;
             use crate::guards::*;
             use crate::handlers;
-            use rocket::State;
             use rocket::serde::json::Json;
-            use serde_json::{Value as JsonValue};
+            use rocket::State;
+            use serde_json::Value as JsonValue;
 
             #[get($route, rank = 1)]
             pub(crate) fn plain_cli(
@@ -121,7 +119,7 @@ macro_rules! route {
                 handlers::$name::json(req_info, user_agent_parser, geoip_city_db, geoip_asn_db)
             }
         }
-    }
+    };
 }
 
 route!(root, "/", "/json");

@@ -6,8 +6,8 @@ use ifconfig_rs::backend::Ifconfig;
 
 use serde_json::json;
 
-use rocket::http::{Accept, ContentType, Header, Status};
 use rocket::http::hyper::header::USER_AGENT;
+use rocket::http::{Accept, ContentType, Header, Status};
 use rocket::local::blocking::Client;
 
 #[test]
@@ -17,7 +17,7 @@ fn handle_root_plain_cli() {
         .get("/")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"curl/7.54.0"))
+        .header(Header::new(USER_AGENT.as_str(), "curl/7.54.0"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -46,7 +46,10 @@ fn handle_root_json() {
         .get("/")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::JSON)
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -97,7 +100,10 @@ fn handle_root_json_json() {
     let response = client
         .get("/json")
         .remote("192.168.0.101:8000".parse().unwrap())
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -135,7 +141,7 @@ fn handle_ip_plain_cli() {
         .get("/ip")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"curl/7.54.0"))
+        .header(Header::new(USER_AGENT.as_str(), "curl/7.54.0"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -164,7 +170,10 @@ fn handle_ip_json() {
         .get("/ip")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::JSON)
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -179,7 +188,10 @@ fn handle_ip_json_json() {
     let response = client
         .get("/ip/json")
         .remote("192.168.0.101:8000".parse().unwrap())
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -195,7 +207,7 @@ fn handle_tcp_plain_cli() {
         .get("/tcp")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"curl/7.54.0"))
+        .header(Header::new(USER_AGENT.as_str(), "curl/7.54.0"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -224,7 +236,10 @@ fn handle_tcp_json() {
         .get("/tcp")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::JSON)
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -239,7 +254,10 @@ fn handle_tcp_json_json() {
     let response = client
         .get("/tcp/json")
         .remote("192.168.0.101:8000".parse().unwrap())
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -255,7 +273,7 @@ fn handle_host_plain_cli_curl() {
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"curl/7.54.0"))
+        .header(Header::new(USER_AGENT.as_str(), "curl/7.54.0"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -270,14 +288,13 @@ fn handle_host_plain_cli_httpie() {
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"HTTPie/0.9.9"))
+        .header(Header::new(USER_AGENT.as_str(), "HTTPie/0.9.9"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
     assert_eq!(response.into_string(), Some("dns.google\n".into()));
 }
-
 
 #[test]
 fn handle_host_plain_cli_wget() {
@@ -286,7 +303,7 @@ fn handle_host_plain_cli_wget() {
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"Wget/1.19.5 (darwin17.5.0)"))
+        .header(Header::new(USER_AGENT.as_str(), "Wget/1.19.5 (darwin17.5.0)"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -315,7 +332,10 @@ fn handle_host_json() {
         .get("/host")
         .remote("8.8.8.8:8000".parse().unwrap())
         .header(Accept::JSON)
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -330,7 +350,10 @@ fn handle_host_json_json() {
     let response = client
         .get("/host/json")
         .remote("8.8.8.8:8000".parse().unwrap())
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -346,7 +369,7 @@ fn handle_isp_plain_cli() {
         .get("/isp")
         .remote("8.8.8.8:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"curl/7.54.0"))
+        .header(Header::new(USER_AGENT.as_str(), "curl/7.54.0"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -375,7 +398,10 @@ fn handle_isp_json() {
         .get("/isp")
         .remote("8.8.8.8:8000".parse().unwrap())
         .header(Accept::JSON)
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -390,7 +416,10 @@ fn handle_isp_json_json() {
     let response = client
         .get("/isp/json")
         .remote("8.8.8.8:8000".parse().unwrap())
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -406,7 +435,7 @@ fn handle_location_plain_cli() {
         .get("/location")
         .remote("93.184.216.34:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"curl/7.54.0"))
+        .header(Header::new(USER_AGENT.as_str(), "curl/7.54.0"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -435,7 +464,10 @@ fn handle_location_json() {
         .get("/location")
         .remote("93.184.216.34:8000".parse().unwrap())
         .header(Accept::JSON)
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -450,7 +482,10 @@ fn handle_location_json_json() {
     let response = client
         .get("/location/json")
         .remote("93.184.216.34:8000".parse().unwrap())
-        .header(Header::new(USER_AGENT.as_str(),"Some browser that will ultimately win the war."))
+        .header(Header::new(
+            USER_AGENT.as_str(),
+            "Some browser that will ultimately win the war.",
+        ))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
@@ -466,12 +501,15 @@ fn handle_user_agent_plain_cli() {
         .get("/user_agent")
         .remote("192.168.0.101:8000".parse().unwrap())
         .header(Accept::Any)
-        .header(Header::new(USER_AGENT.as_str(),"Wget/1.19.5 (darwin17.5.0)"))
+        .header(Header::new(USER_AGENT.as_str(), "Wget/1.19.5 (darwin17.5.0)"))
         .dispatch();
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.into_string(), Some("HTTP Library, wget, UNKNOWN, UNKNOWN\n".into()));
+    assert_eq!(
+        response.into_string(),
+        Some("HTTP Library, wget, UNKNOWN, UNKNOWN\n".into())
+    );
 }
 
 #[test]
@@ -486,7 +524,10 @@ fn handle_user_agent_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.into_string(), Some("Safari, 10.1.2, Mac OSX, 10.12.6\n".into()));
+    assert_eq!(
+        response.into_string(),
+        Some("Safari, 10.1.2, Mac OSX, 10.12.6\n".into())
+    );
 }
 
 #[test]

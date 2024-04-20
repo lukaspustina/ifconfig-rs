@@ -1,8 +1,8 @@
 extern crate ifconfig_rs;
 extern crate rocket;
 
-use rocket::local::blocking::Client;
 use rocket::http::Status;
+use rocket::local::blocking::Client;
 
 #[test]
 fn handle_error_not_found() {

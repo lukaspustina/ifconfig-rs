@@ -21,19 +21,14 @@ use backend::*;
 use fairings::*;
 use routes::*;
 
-use rocket::{Rocket, Build};
+use rocket::{Build, Rocket};
 use rocket_dyn_templates::Template;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Default, Deserialize)]
 pub enum Runtime {
     HEROKU,
-    LOCAL
-}
-
-impl Default for Runtime {
-    fn default() -> Self {
-        Runtime::LOCAL
-    }
+    #[default]
+    LOCAL,
 }
 
 #[derive(Deserialize)]
@@ -47,14 +42,14 @@ pub struct Config {
     runtime: Runtime,
     base_url: String,
     geoip_city_db: Option<String>,
-    geoip_asn_db: Option<String>
+    geoip_asn_db: Option<String>,
 }
 
 #[derive(Serialize)]
 pub struct ProjectInfo {
     name: String,
     version: String,
-    base_url: String
+    base_url: String,
 }
 
 impl ProjectInfo {
@@ -71,7 +66,7 @@ impl From<&Config> for ProjectInfo {
         ProjectInfo {
             name: config.name.clone(),
             version: config.version.clone(),
-            base_url: config.base_url.clone()
+            base_url: config.base_url.clone(),
         }
     }
 }
@@ -120,10 +115,9 @@ pub fn rocket() -> Rocket<Build> {
     let config: Config = rocket.figment().extract().expect("config");
 
     rocket = match config.runtime {
-         Runtime::HEROKU => rocket.attach(HerokuForwardedFor::default()),
+        Runtime::HEROKU => rocket.attach(HerokuForwardedFor),
         _ => rocket,
     };
-
 
     let project_info = ProjectInfo::from(&config);
     rocket = rocket.manage(project_info);
@@ -133,12 +127,10 @@ pub fn rocket() -> Rocket<Build> {
         _ => rocket,
     };
 
-
     rocket = match &config.geoip_asn_db {
         Some(db) => rocket.manage(init_geoip_asn_db(db)),
         _ => rocket,
     };
-
 
     rocket
 }

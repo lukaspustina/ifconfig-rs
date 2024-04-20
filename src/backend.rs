@@ -96,7 +96,9 @@ pub struct IfconfigParam<'a> {
 }
 
 pub fn get_ifconfig<'a>(param: &'a IfconfigParam<'a>) -> Ifconfig<'a> {
-    let host = dns_lookup::lookup_addr(&param.remote.ip()).ok().map(|h| Host { name: h });
+    let host = dns_lookup::lookup_addr(&param.remote.ip())
+        .ok()
+        .map(|h| Host { name: h });
 
     let ip_addr = format!("{}", param.remote.ip());
     let ip_version = if param.remote.is_ipv4() { "4" } else { "6" };
@@ -110,24 +112,16 @@ pub fn get_ifconfig<'a>(param: &'a IfconfigParam<'a>) -> Ifconfig<'a> {
     };
 
     let geo_city: Option<geoip2::City> = param.geoip_city_db.0.lookup(param.remote.ip()).ok();
-    let location = geo_city.map(|c| {
-        Location {
-            city: c.city
-                .and_then(|e| e.names)
-                .and_then(|mut h| h.remove("en")),
-            country: c.country
-                .and_then(|e| e.names)
-                .and_then(|mut h| h.remove("en")),
-            latitude: c.location.as_ref().and_then(|l| l.latitude),
-            longitude: c.location.as_ref().and_then(|l| l.longitude),
-        }
+    let location = geo_city.map(|c| Location {
+        city: c.city.and_then(|e| e.names).and_then(|mut h| h.remove("en")),
+        country: c.country.and_then(|e| e.names).and_then(|mut h| h.remove("en")),
+        latitude: c.location.as_ref().and_then(|l| l.latitude),
+        longitude: c.location.as_ref().and_then(|l| l.longitude),
     });
 
     let geo_isp: Option<geoip2::Isp> = param.geoip_asn_db.0.lookup(param.remote.ip()).ok();
-    let isp = geo_isp.map(|isp| {
-        Isp {
-            name: isp.autonomous_system_organization,
-        }
+    let isp = geo_isp.map(|isp| Isp {
+        name: isp.autonomous_system_organization,
     });
 
     let user_agent = param

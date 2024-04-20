@@ -1,10 +1,8 @@
-#![allow(unknown_lints)] // for clippy
-
 use regex::RegexSet;
-use rocket::Request;
 use rocket::http::Status;
-use rocket::request::{self, FromRequest};
 use rocket::outcome::Outcome;
+use rocket::request::{self, FromRequest};
+use rocket::Request;
 use std::net::SocketAddr;
 
 pub struct RequesterInfo<'a> {
@@ -26,8 +24,8 @@ impl<'a> FromRequest<'a> for RequesterInfo<'a> {
         let user_agent = req.headers().get_one("User-Agent");
 
         let request_info = RequesterInfo {
-            remote: remote,
-            user_agent: user_agent,
+            remote,
+            user_agent,
             uri: req.uri().to_string(),
         };
         Outcome::Success(request_info)
@@ -47,15 +45,9 @@ pub struct CliClientRequest<'a> {
 }
 
 lazy_static! {
-    static ref KNOWN_CLI_CLIENTS: RegexSet = RegexSet::new(&[
-        r"curl",
-        r"HTTPie",
-        r"HTTP Library",
-        r"Wget",
-    ]).unwrap();
+    static ref KNOWN_CLI_CLIENTS: RegexSet = RegexSet::new([r"curl", r"HTTPie", r"HTTP Library", r"Wget",]).unwrap();
 }
 
-#[allow(trivial_regex)]
 #[rocket::async_trait]
 impl<'a> FromRequest<'a> for CliClientRequest<'a> {
     type Error = ();
@@ -65,8 +57,10 @@ impl<'a> FromRequest<'a> for CliClientRequest<'a> {
         let accept_header = req.headers().get_one("Accept");
 
         match (user_agent_header, accept_header) {
-            (Some(uah), Some("*/*")) if KNOWN_CLI_CLIENTS.is_match(uah) => Outcome::Success(CliClientRequest { user_agent_header: uah }),
-            _ => Outcome::Forward(Status::Ok)
+            (Some(uah), Some("*/*")) if KNOWN_CLI_CLIENTS.is_match(uah) => {
+                Outcome::Success(CliClientRequest { user_agent_header: uah })
+            }
+            _ => Outcome::Forward(Status::Ok),
         }
     }
 }

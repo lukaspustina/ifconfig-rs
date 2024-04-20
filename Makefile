@@ -13,10 +13,10 @@ clean:
 	cargo $@
 
 fmt:
-	rustup run nightly cargo fmt -- --write-mode overwrite
+	cargo $@
 
 clippy:
-	rustup run nightly cargo clippy
+	cargo $@
 
 tests: integration ignored
 
