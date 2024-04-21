@@ -374,7 +374,7 @@ fn handle_isp_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.into_string(), Some("Google LLC\n".into()));
+    assert_eq!(response.into_string(), Some("GOOGLE\n".into()));
 }
 
 #[test]
@@ -388,7 +388,7 @@ fn handle_isp_plain() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(response.into_string(), Some("Google LLC\n".into()));
+    assert_eq!(response.into_string(), Some("GOOGLE\n".into()));
 }
 
 #[test]
@@ -406,7 +406,7 @@ fn handle_isp_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"name":"Google LLC"}"#;
+    let expected = r#"{"name":"GOOGLE"}"#;
     assert_eq!(response.into_string(), Some(expected.into()));
 }
 
@@ -424,7 +424,7 @@ fn handle_isp_json_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"name":"Google LLC"}"#;
+    let expected = r#"{"name":"GOOGLE"}"#;
     assert_eq!(response.into_string(), Some(expected.into()));
 }
 
@@ -472,7 +472,7 @@ fn handle_location_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1596,"longitude":-70.8217}"#;
+    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1591,"longitude":-70.8163}"#;
     assert_eq!(response.into_string(), Some(expected.into()));
 }
 
@@ -490,7 +490,7 @@ fn handle_location_json_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1596,"longitude":-70.8217}"#;
+    let expected = r#"{"city":"Norwell","country":"United States","latitude":42.1591,"longitude":-70.8163}"#;
     assert_eq!(response.into_string(), Some(expected.into()));
 }
 

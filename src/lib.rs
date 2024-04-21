@@ -117,7 +117,7 @@ pub fn rocket() -> Rocket<Build> {
     let config: Config = rocket.figment().extract().expect("config");
 
     rocket = match config.runtime {
-        Runtime::HEROKU => rocket.attach(HerokuForwardedFor),
+        Runtime::HEROKU => rocket.attach(XForwardedFor),
         _ => rocket,
     };
 

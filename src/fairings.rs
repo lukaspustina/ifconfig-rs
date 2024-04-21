@@ -5,13 +5,13 @@ use std::net::SocketAddr;
 use std::str::FromStr;
 
 #[derive(Default)]
-pub struct HerokuForwardedFor;
+pub struct XForwardedFor;
 
 #[rocket::async_trait]
-impl Fairing for HerokuForwardedFor {
+impl Fairing for XForwardedFor {
     fn info(&self) -> Info {
         Info {
-            name: "Set the request remote to Heroku's X-Forwarded-For",
+            name: "Set the request remote from left most IP in X-Forwarded-For",
             kind: Kind::Request | Kind::Response,
         }
     }
