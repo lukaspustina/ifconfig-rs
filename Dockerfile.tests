@@ -3,8 +3,9 @@ FROM clux/muslrust:latest AS builder
 WORKDIR /build
 COPY Cargo.toml Cargo.lock .
 COPY src src/
+COPY tests tests/
 COPY Rocket.toml .
 COPY templates templates/
 COPY --from=data /data data/
-RUN cargo test
+RUN cargo test -- --include-ignored
 

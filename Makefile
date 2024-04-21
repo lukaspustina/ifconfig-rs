@@ -18,16 +18,13 @@ fmt:
 clippy:
 	cargo $@
 
-tests: integration ignored
+tests: integration
 
 unit:
 	cargo test --lib --no-fail-fast
 
 integration:
-	cargo test
-
-ignored:
-	cargo test -- --ignored
+	cargo test -- --include-ignored
 
 get_geoip: geoip/GeoIP2-City.mmdb geoip/GeoIP2-ASN.mmdb
 

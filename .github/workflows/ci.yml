@@ -1,5 +1,5 @@
 ---
-name: CI
+name: Continous Integration
 
 on:
   push:
@@ -11,14 +11,46 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Check
+      - name: Cargo Check
         run: cargo check --verbose
-      - name: Build
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cargo Clippy
+        run: cargo clippy --verbose
+
+  fmt:
+    name: Cargo Fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cargo Ftm
+        run: cargo fmt  --check --verbose
+
+  build-n-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cargo Build
         run: cargo build --verbose
+      - name: Cargo Unit Test
+        run: cargo test --lib --no-fail-fast
+
+  integration-test:
+    needs: [check, build-n-test]
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Log into registry GHCR
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
