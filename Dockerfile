@@ -12,4 +12,4 @@ COPY Rocket.toml .
 COPY templates templates/
 COPY --from=builder /ifconfig-rs .
 COPY --from=data /data data/
-CMD ["ifconfig-rs"]
+CMD ["./ifconfig-rs"]
