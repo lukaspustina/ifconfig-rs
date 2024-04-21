@@ -1,20 +1,33 @@
+---
 name: CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
+      - uses: actions/checkout@v3
+      - name: Check
+        run: cargo check --verbose
+      - name: Build
+        run: cargo build --verbose
+      - name: Log into registry GHCR
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        with:
+          registry: ghcr.io
+          username: lukaspustina
+          password: ${{ secrets.LP_GHCR_TOKEN }}
+      - name: Build Docker Image and Run Tests
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          file: Dockerfile.tests
+          context: .
+          push: false

@@ -1,0 +1,10 @@
+FROM ghcr.io/lukaspustina/ifconfig-rs-data:latest AS data
+FROM clux/muslrust:latest AS builder
+WORKDIR /build
+COPY Cargo.toml Cargo.lock .
+COPY src src/
+COPY Rocket.toml .
+COPY templates templates/
+COPY --from=data /data data/
+RUN cargo test
+
