@@ -26,8 +26,8 @@ use rocket_dyn_templates::Template;
 
 #[derive(Debug, Default, Deserialize)]
 pub enum Runtime {
-    #[serde(rename = "heroku")]
-    HEROKU,
+    #[serde(rename = "xforwarded")]
+    XFORWARDED,
     #[default]
     #[serde(rename = "local")]
     LOCAL,
@@ -117,7 +117,7 @@ pub fn rocket() -> Rocket<Build> {
     let config: Config = rocket.figment().extract().expect("config");
 
     rocket = match config.runtime {
-        Runtime::HEROKU => rocket.attach(XForwardedFor),
+        Runtime::XFORWARDED => rocket.attach(XForwardedFor),
         _ => rocket,
     };
 

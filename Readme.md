@@ -14,7 +14,7 @@ _ifconfig_rs_ offers an API to query information like the origin's IP address, T
 - [Another "What's my IP" service? But why?](#another-whats-my-ip-service-but-why)
 - [Customaziation](#customaziation)
 - [Deployment Prerequisites](#deployment-prerequisites)
-- [Heroku (and other providers using load balancers)](#heroku-and-other-providers-using-load-balancers)
+- [Koyeb (and other providers using load balancers)](#koyeb-and-other-providers-using-load-balancers)
 - [FAQ](#faq)
 - [Postcardware](#postcardware)
 
@@ -43,7 +43,7 @@ Well, first of all, everybody should have a "What's my IP" service and I wanted 
 The file [Rocket.toml](Rocket.toml) sets the various runtime parameters.
 
 ### `runtime_environment`
- If you omit the runtime setting, the TCP connection's remote IP address will be presented as your IP address. In case the runtime is set to "heroku", the `X-Forwarded-To` header is used to determine your IP address. In case you another runtime environment, make sure that you get the real origin IP address -- see section [Heroku](#heroku-and-other-providers-using-load-balancers).
+ If you omit the runtime setting, the TCP connection's remote IP address will be presented as your IP address. In case the runtime is set to "xforwarded", the `X-Forwarded-To` header is used to determine your IP address. In case you another runtime environment, make sure that you get the real origin IP address -- see section [Koyeb](#koyeb-and-other-providers-using-load-balancers).
 
 ### `project_name`
 This sets the title, name etc. of the website in the index.html template file.
@@ -60,9 +60,9 @@ For web server specific settings like listen IP address and port etc. please see
 You have to run `make get_geoip` to retrieve the latest MaxMind geoip and ASN databases.
 
 
-## Heroku (and other providers using load balancers)
+## Koyeb (and other providers using load balancers)
 
-[Heroku](https://heroku.com) uses load balancers to route incoming traffic to apps. On this route, the original remote IP address is masqueraded by the load balancers. Therefore, you can not rely on the TCP connection's remote IP address to identify the request origin's IP address. If the load balancers behave like good citizens, then they add the requesters IP address to the HTTP header `X-Forwarded-For`. From this list, you can gather the origin's IP address. See [Heroku's documentation](https://devcenter.heroku.com/articles/http-routing#heroku-headers) or google for the header field. _ifconfig_rs uses a [Rocket Fairing](https://rocket.rs/guide/fairings/); see [fairings.rs](src/fairings.rs) for details.
+[Koyeb](https://koyeb.com) uses load balancers to route incoming traffic to apps. On this route, the original remote IP address is masqueraded by the load balancers. Therefore, you can not rely on the TCP connection's remote IP address to identify the request origin's IP address. If the load balancers behave like good citizens, then they add the requesters IP address to the HTTP header `X-Forwarded-For`. From this list, you can gather the origin's IP address. _ifconfig_rs uses a [Rocket Fairing](https://rocket.rs/guide/fairings/); see [fairings.rs](src/fairings.rs) for details.
 
 
 ## FAQ
@@ -73,11 +73,11 @@ You have to run `make get_geoip` to retrieve the latest MaxMind geoip and ASN da
 
   * Where is [myip.rs](http://myip.rs) hosted?
 
-    The code runs on a free <a href="https://heroku.com">Heroku</a> Autoscaling Dnyo that powers down when there are no service accesses for a period of time. This may lead to a large delay for the first request triggering a service restart.
+    The code runs on <a href="https://koyeb.com">Koyeb</a>.
 
   * Does _ifconfig-rs_ support IPv6?
 
-    Yes. The code is agnostic regarding the IP version, <a href="https://heroku.com">Heroku</a> currently does not support IPv6, so <em>{{ project.name }}</em> is only available for IPv4. You can run your own instance of _ifconfig-rs_ at another, IPv6 supporting provider.
+    Yes. The code is agnostic regarding the IP version.
 
   * Can I run my own instance of _ifconfig-rs_?
 
