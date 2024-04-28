@@ -57,12 +57,12 @@
     </head>
     <body>
         <div class="uk-container">
-            <h1 class="uk-heading-primary uk-heading-line"><span>{{ project.name }}</span></h1>
+            <h1 class="uk-heading-primary uk-heading-line" id="heading-project"><span>{{ project.name }}</span></h1>
             {{#with ifconfig}}
             <div class="uk-child-width-expand@s uk-grid-match" uk-grid>
                 <div class="uk-width-1-1@s">
                     <!-- Use large font on non touch devices -->
-                    <h1 class="uk-hidden-touch mono uk-text-break">{{ ip.addr }}</h1>
+                    <h1 class="uk-hidden-touch mono uk-text-break" id="heading-ip">{{ ip.addr }}</h1>
                     <span class="uk-hidden-notouch mono bigip uk-text-break">{{ ip.addr }}</span>
                     <span class="mono">{{ host.name }}</span>
                 </div>
@@ -80,7 +80,7 @@
                 </div>
                 <div>
                     <h4>User Agent</h4>
-                    <span class="mono uk-text-break">{{ user_agent.browser.family }}, {{ user_agent.browser.version }}</span>
+                    <span class="mono uk-text-break" id="overview-user-agent">{{ user_agent.browser.family }}, {{ user_agent.browser.version }}</span>
                 </div>
                 <div>
                     <h4>Operating System</h4>
