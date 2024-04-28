@@ -506,10 +506,7 @@ fn handle_user_agent_plain_cli() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::Plain));
-    assert_eq!(
-        response.into_string(),
-        Some("HTTP Library, wget, UNKNOWN, UNKNOWN\n".into())
-    );
+    assert_eq!(response.into_string(), Some("Wget, 1.19.5, Other, \n".into()));
 }
 
 #[test]
@@ -526,7 +523,7 @@ fn handle_user_agent_plain() {
     assert_eq!(response.content_type(), Some(ContentType::Plain));
     assert_eq!(
         response.into_string(),
-        Some("Safari, 10.1.2, Mac OSX, 10.12.6\n".into())
+        Some("Safari, 10.1.2, Mac OS X, 10.12.6\n".into())
     );
 }
 
@@ -542,7 +539,7 @@ fn handle_user_agent_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"browser_type":"browser","category":"pc","name":"Safari","os":"Mac OSX","os_version":"10.12.6","vendor":"Apple","version":"10.1.2"}"#;
+    let expected = r#"{"browser":{"family":"Safari","major":"10","minor":"1","patch":"2","version":"10.1.2"},"device":{"brand":"Apple","family":"Mac","model":"Mac"},"os":{"family":"Mac OS X","major":"10","minor":"12","patch":"6","patch_minor":null,"version":"10.12.6"}}"#;
     assert_eq!(response.into_string(), Some(expected.into()));
 }
 
@@ -557,6 +554,6 @@ fn handle_user_agent_json_json() {
     eprintln!("{:?}", response);
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    let expected = r#"{"browser_type":"browser","category":"pc","name":"Safari","os":"Mac OSX","os_version":"10.12.6","vendor":"Apple","version":"10.1.2"}"#;
+    let expected = r#"{"browser":{"family":"Safari","major":"10","minor":"1","patch":"2","version":"10.1.2"},"device":{"brand":"Apple","family":"Mac","model":"Mac"},"os":{"family":"Mac OS X","major":"10","minor":"12","patch":"6","patch_minor":null,"version":"10.12.6"}}"#;
     assert_eq!(response.into_string(), Some(expected.into()));
 }

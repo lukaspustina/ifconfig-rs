@@ -9,7 +9,7 @@ extern crate rocket_dyn_templates;
 #[macro_use]
 extern crate serde;
 extern crate serde_json;
-extern crate woothee;
+extern crate uaparser;
 
 pub mod backend;
 pub mod fairings;
@@ -17,7 +17,6 @@ pub mod guards;
 pub mod handlers;
 pub mod routes;
 
-use backend::*;
 use fairings::*;
 use routes::*;
 
@@ -45,6 +44,7 @@ pub struct Config {
     base_url: String,
     geoip_city_db: Option<String>,
     geoip_asn_db: Option<String>,
+    user_agent_regexes: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -111,8 +111,7 @@ pub fn rocket() -> Rocket<Build> {
                 files
             ],
         )
-        .attach(Template::fairing())
-        .manage(init_user_agent_parser());
+        .attach(Template::fairing());
 
     let config: Config = rocket.figment().extract().expect("config");
 
@@ -123,6 +122,11 @@ pub fn rocket() -> Rocket<Build> {
 
     let project_info = ProjectInfo::from(&config);
     rocket = rocket.manage(project_info);
+
+    rocket = match &config.user_agent_regexes {
+        Some(db) => rocket.manage(init_user_agent_parser(db)),
+        _ => rocket,
+    };
 
     rocket = match &config.geoip_city_db {
         Some(db) => rocket.manage(init_geoip_city_db(db)),
@@ -137,14 +141,14 @@ pub fn rocket() -> Rocket<Build> {
     rocket
 }
 
-fn init_user_agent_parser() -> UserAgentParser {
-    UserAgentParser::new()
+fn init_user_agent_parser(regexes: &str) -> backend::user_agent::UserAgentParser {
+    backend::UserAgentParser::from_yaml(regexes).expect("Failed to load User Agent regexes")
 }
 
-fn init_geoip_city_db(db: &str) -> GeoIpCityDb {
-    GeoIpCityDb::new(db).expect("Failed to load GeoIP City DB")
+fn init_geoip_city_db(db: &str) -> backend::GeoIpCityDb {
+    backend::GeoIpCityDb::new(db).expect("Failed to load GeoIP City DB")
 }
 
-fn init_geoip_asn_db(db: &str) -> GeoIpAsnDb {
-    GeoIpAsnDb::new(db).expect("Failed to load GeoIP ASN DB")
+fn init_geoip_asn_db(db: &str) -> backend::GeoIpAsnDb {
+    backend::GeoIpAsnDb::new(db).expect("Failed to load GeoIP ASN DB")
 }

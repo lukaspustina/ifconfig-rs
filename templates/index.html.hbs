@@ -80,11 +80,11 @@
                 </div>
                 <div>
                     <h4>User Agent</h4>
-                    <span class="mono uk-text-break">{{ user_agent.name }}, {{ user_agent.version }}</span>
+                    <span class="mono uk-text-break">{{ user_agent.browser.family }}, {{ user_agent.browser.version }}</span>
                 </div>
                 <div>
                     <h4>Operating System</h4>
-                    <span class="mono uk-text-break">{{ user_agent.os }}, {{ user_agent.os_version }}</span>
+                    <span class="mono uk-text-break">{{ user_agent.os.family }}, {{ user_agent.os.version }}</span>
                 </div>
         {{/with}}
                 <div class="uk-width-1-1@s" uk-height-viewport="expand: true">

@@ -1,3 +1,4 @@
+use crate::backend::user_agent::UserAgentParser;
 use crate::backend::*;
 use crate::guards::*;
 use crate::ProjectInfo;
@@ -141,7 +142,10 @@ handler!(user_agent, ifconfig, { ifconfig.user_agent }, Option<UserAgent>, {
         "{}\n",
         ifconfig
             .user_agent
-            .map(|ua| format!("{}, {}, {}, {}", ua.name, ua.version, ua.os, ua.os_version))
+            .map(|ua| format!(
+                "{}, {}, {}, {}",
+                ua.browser.family, ua.browser.version, ua.os.family, ua.os.version
+            ))
             .unwrap()
     )
 });

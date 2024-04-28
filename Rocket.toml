@@ -3,6 +3,7 @@ port = 8000
 limits = { form = "64 kB", json = "1 MiB" }
 log_level = "normal"
 project_name = "ifconfig-rs"
+user_agent_regexes = "data/regexes.yaml"
 geoip_city_db = "data/GeoLite2-City.mmdb"
 geoip_asn_db = "data/GeoLite2-ASN.mmdb"
 

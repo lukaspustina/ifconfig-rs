@@ -1,7 +1,9 @@
+pub mod user_agent;
+pub use user_agent::*;
+
 use dns_lookup;
 use maxminddb::{self, geoip2};
 use std::net::SocketAddr;
-use woothee;
 
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Host {
@@ -48,34 +50,6 @@ pub struct Isp<'a> {
     pub name: Option<&'a str>,
 }
 
-pub type UserAgentParser = woothee::parser::Parser;
-pub type UserAgentParserResult<'a> = woothee::parser::WootheeResult<'a>;
-
-#[derive(Debug, PartialEq, Deserialize, Serialize)]
-pub struct UserAgent<'a> {
-    pub name: &'a str,
-    pub category: &'a str,
-    pub os: &'a str,
-    pub os_version: String,
-    pub browser_type: &'a str,
-    pub version: &'a str,
-    pub vendor: &'a str,
-}
-
-impl<'a> From<UserAgentParserResult<'a>> for UserAgent<'a> {
-    fn from(ua: UserAgentParserResult<'a>) -> Self {
-        UserAgent {
-            name: ua.name,
-            category: ua.category,
-            os: ua.os,
-            os_version: ua.os_version.to_string(),
-            browser_type: ua.browser_type,
-            version: ua.version,
-            vendor: ua.vendor,
-        }
-    }
-}
-
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ifconfig<'a> {
     pub host: Option<Host>,
@@ -83,7 +57,7 @@ pub struct Ifconfig<'a> {
     pub tcp: Tcp,
     pub location: Option<Location<'a>>,
     pub isp: Option<Isp<'a>>,
-    pub user_agent: Option<UserAgent<'a>>,
+    pub user_agent: Option<UserAgent>,
     pub user_agent_header: Option<&'a str>,
 }
 
@@ -124,10 +98,7 @@ pub fn get_ifconfig<'a>(param: &'a IfconfigParam<'a>) -> Ifconfig<'a> {
         name: isp.autonomous_system_organization,
     });
 
-    let user_agent = param
-        .user_agent_header
-        .and_then(|s| param.user_agent_parser.parse(s))
-        .map(|res| res.into());
+    let user_agent = param.user_agent_header.map(|s| param.user_agent_parser.parse(s));
 
     Ifconfig {
         host,

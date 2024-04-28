@@ -1,5 +1,6 @@
 #![allow(dead_code)] // for clippy
 
+use crate::backend::user_agent::UserAgentParser;
 use crate::backend::*;
 use crate::guards::*;
 use crate::handlers;
@@ -71,6 +72,7 @@ pub(crate) fn not_found(_: &Request) -> &'static str {
 macro_rules! route {
     ($name:ident, $route:tt, $route_json:tt) => {
         pub mod $name {
+            use crate::backend::user_agent::UserAgentParser;
             use crate::backend::*;
             use crate::guards::*;
             use crate::handlers;
