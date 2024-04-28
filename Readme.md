@@ -1,10 +1,10 @@
 # ifconfig-rs
 
-[![Production deployed](https://img.shields.io/badge/myip.rs-prod-brightgreen.svg)](http://myip.rs) [![Build Status](https://circleci.com/gh/lukaspustina/netatmo-rs.svg?style=shield)](https://circleci.com/gh/lukaspustina/netatmo-rs) [![GitHub release](https://img.shields.io/github/release/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/releases) [![license](https://img.shields.io/github/license/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/blob/master/LICENSE)
+[![Production deployed](https://img.shields.io/badge/ip.pdt.sh.rs-prod-brightgreen.svg)](http://ip.pdt.sh) [![Build Status](https://github.com/lukaspustina/ifconfig-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/lukaspustina/ifconfig-rs/actions/workflows/ci.yml) [![GitHub release](https://img.shields.io/github/release/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/releases) [![license](https://img.shields.io/github/license/lukaspustina/ifconfig-rs.svg)](https://github.com/lukaspustina/ifconfig-rs/blob/master/LICENSE)
 
-_ifconfig-rs_ is yet another <a href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a> service currently powering [myip.rs](http://myip.rs). It is written in <a href="https://www.rust-lang.org/"> Rust</a> (hence the "-rs" suffix) using the <a href="https://rocket.rs">Rocket</a> web framework and includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>. The UI is made with <a href="https://getuikit.com">uikit</a>. It is MIT licensed so please feel free to clone and to fork it.
+_ifconfig-rs_ is yet another <a href="https://www.google.com/search?q=what's+my+ip+address">"what's my IP address"</a> service currently powering [ip.pdt.sh](http://ip.pdt.sh). It is written in <a href="https://www.rust-lang.org/"> Rust</a> (hence the "-rs" suffix) using the <a href="https://rocket.rs">Rocket</a> web framework and includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>. The UI is made with <a href="https://getuikit.com">uikit</a>. It is MIT licensed so please feel free to clone and to fork it.
 
-_ifconfig_rs_ offers an API to query information like the origin's IP address, TCP port, host name, geoip based location, ISP, as well as user agent. See [myip.rs](http://myip.rs) for API and special CLI tool support.
+_ifconfig_rs_ offers an API to query information like the origin's IP address, TCP port, host name, geoip based location, ISP, as well as user agent. See [ip.pdt.sh](http://ip.pdt.sh) for API and special CLI tool support.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -28,9 +28,9 @@ _ifconfig_rs_ offers an API to query information like the origin's IP address, T
 
   * Google Maps integration for geoip location
 
-  * [JSON API](http://myip.rs)
+  * [JSON API](http://ip.pdt.sh)
 
-  * Special [support for CLI tools](http://myip.rs) like [curl](https://curl.haxx.se), [httpie](https://github.com/jakubroztocil/httpie), and [wget](https://www.gnu.org/software/wget/). API calls will be answered with just the base information followed by a newline for easy script integration.
+  * Special [support for CLI tools](http://ip.pdt.sh) like [curl](https://curl.haxx.se), [httpie](https://github.com/jakubroztocil/httpie), and [wget](https://www.gnu.org/software/wget/). API calls will be answered with just the base information followed by a newline for easy script integration.
 
 
 ## Another "What's my IP" service? But why?
@@ -71,7 +71,7 @@ You have to run `make get_geoip` to retrieve the latest MaxMind geoip and ASN da
 
     Yes, that's possible. It turns out that determining the originating IP address of an HTTP request is not as easy as it might seem. For example, there might be transparent proxies, load balancers, and even NAT gateways on the path from your browser to _ifconfig-rs_. Even though, _ifconfig-rs_ uses a heuristic to determine the originating IP address, information may be hidden or removed which might lead to wrong results. If you encouter such a scenario, open an issue on [GitHub](https://github.com/lukaspustina/ifconfig-rs/issues) and let's try to enhance the heuristic together.
 
-  * Where is [myip.rs](http://myip.rs) hosted?
+  * Where is [ip.pdt.sh](http://ip.pdt.sh) hosted?
 
     The code runs on <a href="https://koyeb.com">Koyeb</a>.
 
