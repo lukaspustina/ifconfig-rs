@@ -18,31 +18,17 @@ fmt:
 clippy:
 	cargo $@
 
-tests: integration
+tests: unit integration acceptance
 
 unit:
 	cargo test --lib --no-fail-fast
+	cargo test
 
 integration:
-	cargo test -- --include-ignored
+	$(MAKE) -C tests $@
 
-get_geoip: geoip/GeoIP2-City.mmdb geoip/GeoIP2-ASN.mmdb
-
-geoip/GeoIP2-City.mmdb: geoip
-	curl -s http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz | tar -xzf - -C $<
-	find geoip -name GeoLite2-City.mmdb -exec mv {} $< \;
-	rm -r $</GeoLite2-City_*
-
-geoip/GeoIP2-ASN.mmdb: geoip
-	curl -s http://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz | tar -xzf - -C $<
-	find geoip -name GeoLite2-ASN.mmdb -exec mv {} $< \;
-	rm -r $</GeoLite2-ASN_*
-
-geoip:
-	mkdir $@
-
-clean-geoip:
-	@-rm -R geoip
+acceptance:
+	$(MAKE) -C tests $@
 
 docker-build:
 	docker build . --tag ifconfig-rs:$$(cargo read-manifest | jq ".version" -r)
