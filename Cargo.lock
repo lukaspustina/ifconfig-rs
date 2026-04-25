@@ -1930,9 +1930,7 @@ dependencies = [
 
 [[package]]
 name = "netray-common"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31ec1319290ffde4737b219258f08078abe393bf0bf5e64d01ae9ce3dd92f7c4"
+version = "0.8.0"
 dependencies = [
  "axum",
  "governor",
@@ -1944,6 +1942,7 @@ dependencies = [
  "opentelemetry_sdk",
  "rust-embed",
  "serde",
+ "serde_json",
  "tokio",
  "tracing",
  "tracing-log",

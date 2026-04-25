@@ -50,6 +50,7 @@ fn check_target_rate_limit(state: &AppState, target_ip: IpAddr) -> Option<Respon
     ),
     paths(
         root_handler,
+        api_meta_handler,
         ip_handler,
         ip_cidr_handler,
         tcp_handler,
@@ -82,6 +83,9 @@ fn check_target_rate_limit(state: &AppState, target_ip: IpAddr) -> Option<Respon
         UserAgent, Browser, OS, Device, crate::error::ErrorInfo, ErrorResponse,
         MetaResponse, DataSources, AsnLookupResponse, RangeResponse, DiffRequest,
         crate::state::RateLimitInfo, crate::state::BatchInfo, crate::state::BuildInfo,
+        netray_common::ecosystem::EcosystemMeta,
+        netray_common::ecosystem::EcosystemUrls,
+        netray_common::ecosystem::RateLimitSummary,
     )),
     tags(
         (name = "IP", description = "IP address lookup and version endpoints"),
@@ -155,6 +159,8 @@ pub fn router() -> Router<AppState> {
         .route("/batch/{fmt}", post(batch_format_handler))
         // Meta endpoint (site info for SPA)
         .route("/meta", get(meta_handler))
+        // Suite-wide /api/meta returning the shared `EcosystemMeta` shape.
+        .route("/api/meta", get(api_meta_handler))
         // Probe endpoints (no content negotiation)
         .route("/health", get(health_handler))
         .route("/ready", get(ready_handler))
@@ -1459,6 +1465,66 @@ async fn meta_handler(State(state): State<AppState>) -> Response {
         tls_base_url: state.config.tls_base_url.as_deref(),
     };
     (StatusCode::OK, axum::Json(response)).into_response()
+}
+
+/// Suite-wide `/api/meta` returning the shared
+/// [`netray_common::ecosystem::EcosystemMeta`] shape.
+///
+/// The legacy `/meta` route above serves a richer payload consumed by this
+/// service's own SPA; this `/api/meta` route is the cross-suite contract
+/// (see project-review SDD Req 8) and is what `lens` and the `check-meta-shape`
+/// CI gate hit.
+#[utoipa::path(
+    get,
+    path = "/api/meta",
+    tag = "Probes",
+    description = "Returns the suite-wide EcosystemMeta payload (shared across all netray.info services).",
+    responses(
+        (status = 200, description = "Service metadata (EcosystemMeta)", body = netray_common::ecosystem::EcosystemMeta),
+    )
+)]
+async fn api_meta_handler(
+    State(state): State<AppState>,
+) -> axum::Json<netray_common::ecosystem::EcosystemMeta> {
+    use netray_common::ecosystem::{EcosystemMeta, EcosystemUrls, RateLimitSummary};
+    use serde_json::{Map, Value};
+
+    let info = &*state.project_info;
+    let ctx = state.enrichment.load();
+
+    let mut features = Map::new();
+    features.insert("geoip_city".into(), Value::Bool(ctx.geoip_city_db.is_some()));
+    features.insert("geoip_asn".into(), Value::Bool(ctx.geoip_asn_db.is_some()));
+    features.insert("user_agent".into(), Value::Bool(ctx.user_agent_parser.is_some()));
+    features.insert("tor".into(), Value::Bool(ctx.tor_exit_nodes.is_loaded()));
+    features.insert("vpn".into(), Value::Bool(ctx.vpn_ranges.is_some()));
+    features.insert("cloud".into(), Value::Bool(ctx.cloud_provider_db.is_some()));
+    features.insert("datacenter".into(), Value::Bool(ctx.datacenter_ranges.is_some()));
+    features.insert("batch".into(), Value::Bool(info.batch.enabled));
+
+    let mut limits = Map::new();
+    limits.insert("batch_max_size".into(), Value::from(info.batch.max_size));
+
+    axum::Json(EcosystemMeta {
+        site_name: info.site_name.clone(),
+        version: info.version.clone(),
+        ecosystem: EcosystemUrls {
+            ip_base_url: format!("https://{}", info.base_url),
+            dns_base_url: state.config.dns_base_url.clone().unwrap_or_default(),
+            tls_base_url: state.config.tls_base_url.clone().unwrap_or_default(),
+            http_base_url: String::new(),
+            email_base_url: String::new(),
+            lens_base_url: String::new(),
+        },
+        features,
+        limits,
+        rate_limit: RateLimitSummary {
+            per_ip_per_minute: info.rate_limit.per_ip_per_minute,
+            per_ip_burst: info.rate_limit.per_ip_burst,
+            global_per_minute: 0,
+            global_burst: 0,
+        },
+    })
 }
 
 // ---- Health handler ----
