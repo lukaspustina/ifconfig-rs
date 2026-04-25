@@ -1,20 +1,5 @@
 # CLAUDE.md — ifconfig-rs
 
-## Rules
-
-- No Co-Authored-By for Claude in commits
-- Scoped changes only: no formatting mixed with functional changes, no unrelated modifications
-- No heavy deps for minor convenience; no speculative flags/config/abstractions without a caller
-- Don't bypass failing checks (`--no-verify`, `#[allow(...)]`) without explaining why
-- No PII, real emails, or real domains (use example.com) in test data, docs, commits
-- `TODO("reason")` over hidden guesses; conventional commits (`feat:`, `fix:`, `refactor:`, etc.)
-
-## Engineering Principles
-
-KISS · YAGNI · DRY (rule of three) · SRP · Fail Fast · Secure by Default · Reversibility · Performance
-
-- **Rust patterns**: Use idiomatic Rust (enums, traits, iterators). Leverage the type system to prevent invalid states.
-
 ## Project Overview
 
 **ifconfig-rs** is a "what's my IP" web service written in Rust, powering **ip.netray.info**. Returns IP address, hostname, geolocation, ISP, and user agent info as plain text, JSON, YAML, TOML, CSV, or via a SolidJS SPA depending on the client.
@@ -203,14 +188,7 @@ Workflow rules: [`specs/rules/workflow-rules.md`](../specs/rules/workflow-rules.
 
 Workflows: `ci.yml` (PR gate: fmt, clippy, test, frontend, audit, integration-test, e2e-test), `release.yml` (tag-push: test → build → merge), `deploy.yml` (fires after release via webhook).
 
-**GitHub Packages auth**: Any CI step that runs `npm ci` for the frontend must set `NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}` as an env var on that step. The project `.npmrc` uses `${NODE_AUTH_TOKEN}` as a placeholder (not a hardcoded token) so the token must be injected at runtime. This applies to the `clippy`, `test`, and `frontend` jobs. Missing this env var causes E401 from `https://npm.pkg.github.com`.
-
-```yaml
-- name: Build frontend
-  run: cd frontend && npm ci && npm run build
-  env:
-    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
+GitHub Packages auth (`NODE_AUTH_TOKEN`) requirement: see workflow-rules R-J3.
 
 ## Common Patterns
 
