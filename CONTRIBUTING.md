@@ -16,11 +16,6 @@ services with their own repos. Everything you see at
 [netray.info](https://netray.info) — including its hosted instance — runs
 on the same code that's published here.
 
-The full product strategy, including how the suite fits together and where
-it's heading, lives in
-[`specs/product-strategy.md`](https://github.com/netray-info/netray.info/blob/main/specs/product-strategy.md)
-in the meta-repo.
-
 ## How this project is governed
 
 netray.info is a **maintainer-led project**. The maintainer (Lukas Pustina)
@@ -29,12 +24,12 @@ are welcome but not guaranteed acceptance — opening an issue first for
 non-trivial work is the cheapest way to find out if a change fits the
 roadmap.
 
-A commercial monitoring tier is planned in the future. The inspector,
-scoring, result-sharing, and self-host layers will remain open source
-under MIT indefinitely. The future commercial component will live in its
-own repo under its own license; existing public code is unaffected. See
-[`specs/product-strategy.md`](https://github.com/netray-info/netray.info/blob/main/specs/product-strategy.md)
-§3 *Licensing and contribution posture* for the full reasoning.
+The maintainer reserves the right to release future modules in separate
+repositories under different licenses. The code in this repo, and in the
+other public repos of the netray.info ecosystem, stays under MIT; your
+contributions are licensed under MIT and won't be retroactively
+relicensed. Sign-off via DCO (see below) is the contribution mechanism —
+no copyright assignment, no separate CLA.
 
 ## Before you contribute
 
@@ -158,9 +153,8 @@ contributing to — MIT for all current public repos in the netray.info
 ecosystem. The DCO sign-off is the contribution mechanism; no separate
 CLA is required.
 
-If a future repo is published under a different license (for example, the
-planned monitoring service), it will state its license clearly and the
-same DCO process will apply.
+If a future repo is published under a different license, it will state
+its license clearly and the same DCO process will apply.
 
 ## Reviewing and merging
 
