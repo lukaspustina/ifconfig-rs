@@ -1,4 +1,5 @@
-use criterion::{Criterion, black_box, criterion_group, criterion_main};
+use criterion::{Criterion, criterion_group, criterion_main};
+use std::hint::black_box;
 
 use ifconfig_rs::backend::cloud_provider::CloudProviderDb;
 use std::sync::atomic::{AtomicU32, Ordering};
