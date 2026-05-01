@@ -1483,9 +1483,7 @@ async fn meta_handler(State(state): State<AppState>) -> Response {
         (status = 200, description = "Service metadata (EcosystemMeta)", body = netray_common::ecosystem::EcosystemMeta),
     )
 )]
-async fn api_meta_handler(
-    State(state): State<AppState>,
-) -> axum::Json<netray_common::ecosystem::EcosystemMeta> {
+async fn api_meta_handler(State(state): State<AppState>) -> axum::Json<netray_common::ecosystem::EcosystemMeta> {
     use netray_common::ecosystem::{EcosystemMeta, EcosystemUrls, RateLimitSummary};
     use serde_json::{Map, Value};
 
