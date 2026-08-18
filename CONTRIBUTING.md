@@ -51,8 +51,8 @@ no copyright assignment, no separate CLA.
    to review than a sweep that touches many concerns.
 3. Follow the project's coding conventions (see *Conventions* below).
 4. Write or update tests where the change has logical risk.
-5. Run the project's CI-equivalent locally before pushing — typically
-   `make ci` or `make test` (check the repo's `Makefile`).
+5. Run the project's CI-equivalent locally before pushing — `just check`, or
+   `just adlc-verify` for the fast offline subset.
 6. Sign off your commits (see *Developer Certificate of Origin* below).
 7. Push and open a PR with a clear description: what changes, why, and
    how to verify.

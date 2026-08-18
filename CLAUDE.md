@@ -10,30 +10,32 @@
 ## Build & Test
 
 ```sh
-cd frontend && npm ci && npm run build  # Build frontend (required before cargo build)
-cargo build                  # Build (requires frontend/dist/)
-cargo test --lib --no-fail-fast  # Unit tests (fast, no network)
-cargo test                   # All tests including integration
-cargo clippy                 # Lint
-cargo fmt                    # Format
-cargo run -- ifconfig.dev.toml  # Local dev server on :8080
-make frontend-build          # Build frontend via make
-make dev                     # Run dev server
-make test                    # Unit + Docker integration + Playwright E2E
-make integration             # Docker-based integration tests only
-make acceptance              # Playwright E2E tests only
-make bench                   # Run Criterion benchmarks
-make docker-build            # Production Docker image
-cargo bench                  # Run benchmarks directly (negotiation, asn_heuristic, serialization, cloud_lookup)
+just adlc-verify   # the ADLC gate: fmt-check, clippy, 201 library tests — offline, ~5 s
+just frontend      # npm ci + vite build (needs NODE_AUTH_TOKEN); required before any cargo build
+just build         # frontend + release binary
+just test-lib      # library tests only (fast, no network, no GeoIP database)
+just test-rust     # library + integration tests (needs data/GeoLite2-City.mmdb)
+just test          # everything Rust and frontend
+just check         # lint + test + frontend build
+just dev           # local dev server on :8080
+just integration   # Docker-based integration tests only
+just acceptance    # Playwright E2E tests only
+just bench         # Criterion benchmarks
+just docker        # production Docker image
 ```
+
+The Rust build embeds `frontend/dist` via RustEmbed and does not compile without
+it; `dist` is gitignored, so `just frontend` has to run once after a clone.
+`adlc-verify` checks for the directory and says so rather than failing inside
+the compiler.
 
 ### Test Guidelines
 
 - `cargo test --lib` is the fast reliable check — no network or external services needed (~168 unit tests).
 - `cargo test` also runs integration tests in `tests/ok_handlers.rs` (~124 tests covering all endpoints, content types, `?ip=` lookups, `?fields=` filtering, batch, `/ipv6`, security headers, OpenAPI, and `/docs`), `tests/error_handler.rs`, `tests/rate_limit.rs` (5 tests covering rate limit headers, 429 behavior, and probe exemptions), and `tests/admin.rs` (admin port bearer auth). Total: ~300 tests.
 - Integration tests spawn real TCP listeners with hyper_util for each test case.
-- Docker integration tests (`make integration`) build and test inside a container via `tests/Dockerfile.tests`.
-- Playwright E2E tests (`make acceptance`) use configurable `baseURL` (default `http://127.0.0.1:8000`, override via `BASE_URL` env var) across Chromium, Firefox, and WebKit.
+- Docker integration tests (`just integration`) build and test inside a container via `tests/Dockerfile.tests`.
+- Playwright E2E tests (`just acceptance`) use configurable `baseURL` (default `http://127.0.0.1:8000`, override via `BASE_URL` env var) across Chromium, Firefox, and WebKit.
 
 ## Architecture
 
@@ -205,4 +207,4 @@ GitHub Packages auth (`NODE_AUTH_TOKEN`) requirement: see workflow-rules R-J3.
 - Application-level Prometheus metrics: `http_requests_total{method,status}`, `http_request_duration_seconds{method}`, `enrichment_sources_loaded{source}`, `geoip_database_age_seconds`. `metrics` macros are no-op when no recorder is installed (safe in tests).
 - Frontend assets are embedded at compile time via `rust-embed` — `cargo build` requires `frontend/dist/` to exist.
 - All error responses are structured JSON via `error_response()` returning `ErrorResponse { error, status }`. The `ErrorResponse` struct derives `utoipa::ToSchema` and is referenced in OpenAPI error response annotations.
-- Criterion benchmarks in `benches/` cover negotiation, ASN classification, serialization (all 4 formats), and cloud CIDR lookup. Run with `cargo bench` or `make bench`.
+- Criterion benchmarks in `benches/` cover negotiation, ASN classification, serialization (all 4 formats), and cloud CIDR lookup. Run with `just bench`.

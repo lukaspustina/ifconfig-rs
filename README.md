@@ -281,10 +281,11 @@ Data files live in `data/`. Acquire them with `make -C data get_all` (requires a
 Prerequisites: Rust toolchain, Node.js (for the frontend).
 
 ```sh
-make            # frontend + release binary
-make dev        # cargo run with ifconfig.dev.toml (port 8080)
-make test       # unit + integration tests (~300 tests)
-make ci         # full gate: fmt, clippy, test, frontend, audit
+just build         # frontend + release binary
+just dev           # cargo run with ifconfig.dev.toml (port 8080)
+just test          # unit + integration tests (~300 tests)
+just check         # full gate: fmt, clippy, test, frontend
+just adlc-verify   # the fast, offline subset the ADLC runs before a push
 ```
 
 ---
