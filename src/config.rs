@@ -325,7 +325,8 @@ mod tests {
         let _guard = ENV_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         let config = Config::load(None).unwrap();
         let toml_str = toml::to_string(&config).unwrap();
-        let _parsed: Config = toml::from_str(&toml_str).unwrap();
+        let parsed: Config = toml::from_str(&toml_str).unwrap();
+        assert_eq!(toml::to_string(&parsed).unwrap(), toml_str);
     }
 
     // Env-var tests share a mutex to prevent concurrent tests from clobbering
